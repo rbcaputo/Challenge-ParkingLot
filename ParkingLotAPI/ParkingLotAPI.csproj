@@ -28,7 +28,6 @@
     <Folder Include="Interfaces\HttpRequests\" />
     <Folder Include="Mappers\" />
     <Folder Include="Models\Users\" />
-    <Folder Include="Utils\" />
     <Folder Include="Services\HttpRequests\" />
   </ItemGroup>
 
