@@ -11,18 +11,18 @@ namespace ParkingLotAPI.Models.Lot
 		[Key]
 		public int Id { get; set; }
 
-		public Fare? Fare { get; set; }
+		public Fare Fare { get; set; } = new();
 
 		[ForeignKey(nameof(Fare))]
-		public int? FareId { get; set; }
+		public int FareId { get; set; }
 
-		public Vehicle? Vehicle { get; set; }
-		
+		public Vehicle Vehicle { get; set; } = new();
+
 		[ForeignKey(nameof(Parking))]
-		public int? VehicleId { get; set; }
-		
+		public int VehicleId { get; set; }
+
 		public DateTime EntryTime { get; set; } = DateTime.Now;
-		
+
 		public DateTime? ExitTime
 		{
 			get => _exitTime;
@@ -33,9 +33,9 @@ namespace ParkingLotAPI.Models.Lot
 				_exitTime = value;
 			}
 		}
-		
-		public decimal TotalPrice { get; set; }
 
 		public TimeSpan Duration => (ExitTime ?? DateTime.Now) - EntryTime;
+
+		public decimal TotalPrice => FareValidator.CalculateTotalPrice(this);
 	}
 }

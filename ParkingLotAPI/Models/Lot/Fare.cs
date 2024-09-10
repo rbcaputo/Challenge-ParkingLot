@@ -1,6 +1,5 @@
 ﻿using ParkingLotAPI.Utils;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParkingLotAPI.Models.Lot
 {
@@ -10,7 +9,7 @@ namespace ParkingLotAPI.Models.Lot
 
 		private DateTime? _endDate;
 
-		private decimal _pricePerHour = 0;
+		private decimal _pricePerHour = 1.00m;
 
 		[Key]
 		public int Id { get; set; }
