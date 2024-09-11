@@ -5,25 +5,21 @@ namespace ParkingLotAPI.Data
 {
 	public class DataContext : DbContext
 	{
-		public DbSet<Vehicle> Vehicles { get; set; }
-		public DbSet<Fare> Fares { get; set; }
-		public DbSet<Parking> Parkings { get; set; }
+		public DbSet<VehicleModel> Vehicles { get; set; }
+		public DbSet<FareModel> Fares { get; set; }
+		public DbSet<ParkingModel> Parkings { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.Entity<Parking>()
+			builder.Entity<ParkingModel>()
 				.HasOne(p => p.Vehicle)
 				.WithMany(v => v.Parkings)
-				.HasForeignKey(p => p.VehicleId)
-				.IsRequired()
-				.OnDelete(DeleteBehavior.Restrict);
+				.HasForeignKey(p => p.VehicleId);
 
-			builder.Entity<Parking>()
+			builder.Entity<ParkingModel>()
 				.HasOne(p => p.Fare)
-				.WithMany(f => f.Parkings)
-				.HasForeignKey(p => p.FareId)
-				.IsRequired()
-				.OnDelete(DeleteBehavior.Restrict);
+				.WithOne()
+				.HasForeignKey<ParkingModel>(p => p.FareId);
 
 			base.OnModelCreating(builder);
 		}

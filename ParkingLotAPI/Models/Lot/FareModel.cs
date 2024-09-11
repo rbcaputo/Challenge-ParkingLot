@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ParkingLotAPI.Models.Lot
 {
-	public class Fare
+	public class FareModel
 	{
 		private DateTime _startDate = DateTime.Now;
 
@@ -49,7 +49,5 @@ namespace ParkingLotAPI.Models.Lot
 
 		public bool IsCurrent => (StartDate <= DateTime.Now) &&
 														 (!_endDate.HasValue || EndDate >= DateTime.Now);
-
-		public ICollection<Parking> Parkings { get; set; } = [];
 	}
 }

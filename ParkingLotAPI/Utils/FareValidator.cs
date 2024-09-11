@@ -24,7 +24,7 @@ namespace ParkingLotAPI.Utils
 				throw new ArgumentException($"{nameof(exitTime)} cannot be before {nameof(entryTime)}.");
 		}
 
-		public static decimal CalculateTotalPrice(Parking parking)
+		public static decimal CalculateTotalPrice(ParkingModel parking)
 		{
 			if (parking.Fare == null)
 				throw new ArgumentException($"{nameof(parking.Fare)} cannot be null.");

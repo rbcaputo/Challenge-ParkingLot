@@ -6,7 +6,7 @@ using static ParkingLotAPI.Data.Constants.SizeFareMods;
 namespace ParkingLotAPI.Models.Lot
 {
 	[Index(nameof(LicensePlate), IsUnique = true)]
-	public class Vehicle
+	public class VehicleModel
 	{
 		[Key]
 		public int Id { get; set; }
@@ -24,6 +24,6 @@ namespace ParkingLotAPI.Models.Lot
 		
 		public string Color { get; set; } = string.Empty;
 
-		public ICollection<Parking> Parkings { get; set; } = [];
+		public ICollection<ParkingModel> Parkings { get; set; } = [];
 	}
 }

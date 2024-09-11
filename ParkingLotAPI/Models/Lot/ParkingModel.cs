@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParkingLotAPI.Models.Lot
 {
-	public class Parking
+	public class ParkingModel
 	{
 		private DateTime? _exitTime;
 
 		[Key]
 		public int Id { get; set; }
 
-		public Fare Fare { get; set; } = new();
+		public FareModel Fare { get; set; } = new();
 
 		[ForeignKey(nameof(Fare))]
 		public int FareId { get; set; }
 
-		public Vehicle Vehicle { get; set; } = new();
+		public VehicleModel Vehicle { get; set; } = new();
 
-		[ForeignKey(nameof(Parking))]
+		[ForeignKey(nameof(ParkingModel))]
 		public int VehicleId { get; set; }
 
 		public DateTime EntryTime { get; set; } = DateTime.Now;

@@ -22,9 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Dtos\Lot\" />
     <Folder Include="Interfaces\HttpRequests\" />
-    <Folder Include="Mappers\" />
     <Folder Include="Services\HttpRequests\" />
   </ItemGroup>
 
