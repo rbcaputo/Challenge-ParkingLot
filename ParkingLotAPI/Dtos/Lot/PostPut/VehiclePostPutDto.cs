@@ -1,9 +1,8 @@
-﻿using ParkingLotAPI.Dtos.Min;
-using static ParkingLotAPI.Data.Constants.SizeFareMods;
+﻿using static ParkingLotAPI.Data.Constants.SizeFareMods;
 
-namespace ParkingLotAPI.Dtos.Lot.Get
+namespace ParkingLotAPI.Dtos.Lot.PostPut
 {
-	public class VehicleGetDto
+	public class VehiclePostPutDto
 	{
 		public string LicensePlate { get; set; } = string.Empty;
 
@@ -14,9 +13,5 @@ namespace ParkingLotAPI.Dtos.Lot.Get
 		public string Model { get; set; } = string.Empty;
 
 		public string Color { get; set; } = string.Empty;
-
-		public ICollection<ParkingGetMinDto> Parkings { get; set; } = [];
-
-		public bool IsParked { get; set; }
 	}
 }

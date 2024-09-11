@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ParkingLotAPI.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static ParkingLotAPI.Data.Constants.SizeFareMods;
@@ -25,5 +26,7 @@ namespace ParkingLotAPI.Models.Lot
 		public string Color { get; set; } = string.Empty;
 
 		public ICollection<ParkingModel> Parkings { get; set; } = [];
+
+		public bool IsParked => ValidatorClass.CheckIfVechileIsParked(this);
 	}
 }

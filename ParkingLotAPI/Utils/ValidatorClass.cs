@@ -46,5 +46,17 @@ namespace ParkingLotAPI.Utils
 
 			return fullHours * adjustedPricePerHour;
 		}
+
+		public static bool CheckIfFareIsCurrent(FareModel fare)
+		{
+			return (fare.StartDate <= DateTime.Now) &&
+						 (!fare.EndDate.HasValue || fare.EndDate >= DateTime.Now);
+		}
+
+		public static bool CheckIfVechileIsParked(VehicleModel vehicle)
+		{
+			return vehicle.Parkings.
+				Any(p => p.ExitTime == null);
+		}
 	}
 }

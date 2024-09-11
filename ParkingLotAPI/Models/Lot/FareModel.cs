@@ -9,7 +9,7 @@ namespace ParkingLotAPI.Models.Lot
 
 		private DateTime? _endDate;
 
-		private decimal _pricePerHour = 1.00m;
+		private decimal _pricePerHour = 5.00m;
 
 		[Key]
 		public int Id { get; set; }
@@ -47,7 +47,6 @@ namespace ParkingLotAPI.Models.Lot
 			}
 		}
 
-		public bool IsCurrent => (StartDate <= DateTime.Now) &&
-														 (!_endDate.HasValue || EndDate >= DateTime.Now);
+		public bool IsCurrent => ValidatorClass.CheckIfFareIsCurrent(this);
 	}
 }

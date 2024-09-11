@@ -14,12 +14,14 @@ namespace ParkingLotAPI.Data
 			builder.Entity<ParkingModel>()
 				.HasOne(p => p.Vehicle)
 				.WithMany(v => v.Parkings)
-				.HasForeignKey(p => p.VehicleId);
+				.HasForeignKey(p => p.VehicleId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			builder.Entity<ParkingModel>()
 				.HasOne(p => p.Fare)
 				.WithOne()
-				.HasForeignKey<ParkingModel>(p => p.FareId);
+				.HasForeignKey<ParkingModel>(p => p.FareId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			base.OnModelCreating(builder);
 		}
