@@ -1,4 +1,4 @@
-﻿namespace ParkingLotAPI.Dtos.Lot
+﻿namespace ParkingLotAPI.Dtos.Lot.Get
 {
 	public class FareGetDto
 	{

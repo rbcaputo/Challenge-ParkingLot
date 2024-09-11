@@ -1,4 +1,4 @@
-﻿using ParkingLotAPI.Dtos.Lot;
+﻿using ParkingLotAPI.Dtos.Lot.Get;
 
 namespace ParkingLotAPI.Dtos.Min
 {

@@ -1,7 +1,7 @@
 ﻿using ParkingLotAPI.Dtos.Min;
 using static ParkingLotAPI.Data.Constants.SizeFareMods;
 
-namespace ParkingLotAPI.Dtos.Lot
+namespace ParkingLotAPI.Dtos.Lot.Get
 {
 	public class VehicleGetDto
 	{

@@ -1,4 +1,4 @@
-﻿using ParkingLotAPI.Dtos.Lot;
+﻿using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Models.Lot;
 
 namespace ParkingLotAPI.Mappers.Lot
