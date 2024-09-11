@@ -2,7 +2,7 @@
 
 namespace ParkingLotAPI.Utils
 {
-	public static class FareValidator
+	public static class ValidatorClass
 	{
 		public static void ValidateDuration(DateTime startDate, DateTime? endDate)
 		{

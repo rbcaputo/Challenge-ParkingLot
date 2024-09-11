@@ -19,7 +19,7 @@ namespace ParkingLotAPI.Models.Lot
 			get => _startDate;
 			set
 			{
-				FareValidator.ValidateDuration(_startDate, value);
+				ValidatorClass.ValidateDuration(_startDate, value);
 
 				_startDate = value;
 			}
@@ -30,7 +30,7 @@ namespace ParkingLotAPI.Models.Lot
 			get => _endDate;
 			set
 			{
-				FareValidator.ValidateDuration(_startDate, value);
+				ValidatorClass.ValidateDuration(_startDate, value);
 
 				_endDate = value;
 			}
@@ -41,7 +41,7 @@ namespace ParkingLotAPI.Models.Lot
 			get => _pricePerHour;
 			set
 			{
-				FareValidator.ValidatePricePerHour(value);
+				ValidatorClass.ValidatePricePerHour(value);
 
 				_pricePerHour = value;
 			}

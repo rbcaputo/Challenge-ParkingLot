@@ -12,16 +12,16 @@ namespace ParkingLotAPI.Models.Lot
 		public int Id { get; set; }
 
 		public string LicensePlate { get; set; } = string.Empty;
-		
+
 		public VehicleSizes Size { get; set; }
 
 		[NotMapped]
 		public double SizeFareMod => VehicleSizeFareMods[Size];
 
 		public string Brand { get; set; } = string.Empty;
-		
+
 		public string Model { get; set; } = string.Empty;
-		
+
 		public string Color { get; set; } = string.Empty;
 
 		public ICollection<ParkingModel> Parkings { get; set; } = [];

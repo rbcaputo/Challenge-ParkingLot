@@ -28,7 +28,7 @@ namespace ParkingLotAPI.Models.Lot
 			get => _exitTime;
 			set
 			{
-				FareValidator.ValidateExitTime(EntryTime, value);
+				ValidatorClass.ValidateExitTime(EntryTime, value);
 
 				_exitTime = value;
 			}
@@ -36,6 +36,6 @@ namespace ParkingLotAPI.Models.Lot
 
 		public TimeSpan Duration => (ExitTime ?? DateTime.Now) - EntryTime;
 
-		public decimal TotalPrice => FareValidator.CalculateTotalPrice(this);
+		public decimal TotalPrice => ValidatorClass.CalculateTotalPrice(this);
 	}
 }
