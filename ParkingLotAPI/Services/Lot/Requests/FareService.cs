@@ -98,12 +98,12 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<FareModel?> GetCurrentFareModelAsync(CancellationToken cancellation)
+		internal async Task<FareModel?> GetCurrentFareModelAsync(CancellationToken cancellation)
 		{
 			try
 			{
 				FareModel? fare = await _context.Fares
-					.FirstOrDefaultAsync(f => f.IsCurrent);
+					.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
 
 				return fare ?? null;
 			}
