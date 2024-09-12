@@ -15,7 +15,7 @@ namespace ParkingLotAPI.Dtos.Lot.Get
 
 		public string Color { get; set; } = string.Empty;
 
-		public ICollection<ParkingGetMinDto> Parkings { get; set; } = [];
+		public ICollection<ParkingMinGetDto> Parkings { get; set; } = [];
 
 		public bool IsParked { get; set; }
 	}

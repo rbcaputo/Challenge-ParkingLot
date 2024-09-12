@@ -2,7 +2,7 @@
 
 namespace ParkingLotAPI.Dtos.Min
 {
-	public class ParkingGetMinDto
+	public class ParkingMinGetDto
 	{
 		public FareGetDto Fare { get; set; } = new();
 

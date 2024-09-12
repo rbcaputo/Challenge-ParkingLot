@@ -1,4 +1,5 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Models.Lot;
 
 namespace ParkingLotAPI.Mappers.Lot
@@ -17,6 +18,34 @@ namespace ParkingLotAPI.Mappers.Lot
 
 				IsCurrent = fare.IsCurrent
 			};
+		}
+
+		public static FareModel MapFarePostDtoToModel(FarePostPutDto fareDto)
+		{
+			return new FareModel
+			{
+				StartDate = fareDto.StartDate,
+
+				EndDate = fareDto.EndDate,
+
+				PricePerHour = fareDto.PricePerHour
+			};
+		}
+
+		public static void MapFarePutDtoToModel(FarePostPutDto fareDto, FareModel fare)
+		{
+			fare.StartDate = fareDto.StartDate;
+
+			fare.EndDate = fareDto.EndDate;
+
+			fare.PricePerHour = fareDto.PricePerHour;
+		}
+
+		public static bool CompareFareModelToPutDto(FareModel fare, FarePostPutDto fareDto)
+		{
+			return fare.StartDate == fareDto.StartDate &&
+						 fare.EndDate == fareDto.EndDate &&
+						 fare.PricePerHour == fareDto.PricePerHour;
 		}
 	}
 }

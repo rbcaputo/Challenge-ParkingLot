@@ -10,7 +10,7 @@ namespace ParkingLotAPI.Interfaces.Lot.HttpRequests
 		public Task<VehicleGetDto?> GetVehicleByLicensePlateAsync(string licensePlate, CancellationToken cancellation);
 
 		public Task<bool> AddVehicleAsync(VehiclePostPutDto vehicleDto, CancellationToken cancellation);
-		public Task<bool?> UpdateVehicleAsync(VehiclePostPutDto vehicleDto, CancellationToken cancellation);
+		public Task<bool?> UpdateVehicleByLicensePlateAsync(VehiclePostPutDto vehicleDto, CancellationToken cancellation);
 		public Task<bool?> RemoveVehicleByLicensePlateAsync(string licensePlate, CancellationToken cancellation);
 
 	}

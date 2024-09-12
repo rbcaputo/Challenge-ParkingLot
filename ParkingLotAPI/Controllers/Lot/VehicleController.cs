@@ -62,7 +62,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		public async Task<ActionResult<bool>> AddVehicleAsync(VehiclePostPutDto vehicleDto)
+		public async Task<IActionResult> AddVehicleAsync(VehiclePostPutDto vehicleDto)
 		{
 			try
 			{
@@ -79,19 +79,18 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		public async Task<ActionResult<bool>> UpdateVehicleAsync(VehiclePostPutDto vehicleDto)
+		public async Task<IActionResult> UpdateVehicleByLicensePlateAsync(VehiclePostPutDto vehicleDto)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				bool? isUpdated = await _service.UpdateVehicleAsync(vehicleDto, cancellation);
+				bool? isUpdated = await _service.UpdateVehicleByLicensePlateAsync(vehicleDto, cancellation);
 
-				if (isUpdated == null)
-					return NotFound("No vehicle was found with the given license plate.");
-
-				return (bool)!isUpdated ?
-					BadRequest("Vehicle could not be updated.") :
-					Ok("Vehicle updated successfully.");
+				return isUpdated == null ?
+				 NotFound("No vehicle was found with the given license plate.") :
+			 (bool)!isUpdated ?
+				 BadRequest("Vehicle could not be updated.") :
+				 Ok("Vehicle updated successfully.");
 			}
 			catch (Exception e)
 			{
@@ -99,17 +98,16 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		public async Task<ActionResult<bool>> RemoveVehicleByLicensePlateAsync(string licensePlate)
+		public async Task<IActionResult> RemoveVehicleByLicensePlateAsync(string licensePlate)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				bool? isRemoved = await _service.RemoveVehicleByLicensePlateAsync(licensePlate, cancellation);
 
-				if (isRemoved == null)
-					return NotFound("No vehicle was found with the given license plate.");
-
-				return (bool)!isRemoved ?
+				return isRemoved == null ?
+					NotFound("No vehicle was found with the given license plate.") :
+				(bool)!isRemoved ?
 					BadRequest("Vehicle could not be removed.") :
 					Ok("Vehicle removed successfully.");
 			}

@@ -28,7 +28,7 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static VehicleModel MapVehiclePostPutDtoToModel(VehiclePostPutDto vehicleDto)
+		public static VehicleModel MapVehiclePostDtoToModel(VehiclePostPutDto vehicleDto)
 		{
 			return new VehicleModel
 			{
@@ -44,7 +44,20 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static bool CompareVehicleModelToPostPutDto(VehicleModel vehicle, VehiclePostPutDto vehicleDto)
+		public static void MapVehiclePutDtoToModel(VehiclePostPutDto vehicleDto, VehicleModel vehicle)
+		{
+			vehicle.LicensePlate = vehicleDto.LicensePlate;
+
+			vehicle.Size = vehicleDto.Size;
+
+			vehicle.Brand = vehicleDto.Brand;
+
+			vehicle.Model = vehicleDto.Model;
+
+			vehicle.Color = vehicleDto.Color;
+		}
+
+		public static bool CompareVehicleModelToPutDto(VehicleModel vehicle, VehiclePostPutDto vehicleDto)
 		{
 			if (vehicle == null || vehicleDto == null)
 				return false;

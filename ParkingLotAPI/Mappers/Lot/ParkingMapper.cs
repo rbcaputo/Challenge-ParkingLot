@@ -24,9 +24,9 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static ParkingGetMinDto MapParkingModelToGetMinDto(ParkingModel parking)
+		public static ParkingMinGetDto MapParkingModelToGetMinDto(ParkingModel parking)
 		{
-			return new ParkingGetMinDto
+			return new ParkingMinGetDto
 			{
 				Fare = FareMapper.MapFareModelToGetDto(parking.Fare),
 
