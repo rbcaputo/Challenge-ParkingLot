@@ -14,7 +14,7 @@ namespace ParkingLotAPI.Models.Lot
 
 		public string LicensePlate { get; set; } = string.Empty;
 
-		public VehicleSizes Size { get; set; }
+		public VehicleSize Size { get; set; }
 
 		[NotMapped]
 		public double SizeFareMod => VehicleSizeFareMods[Size];

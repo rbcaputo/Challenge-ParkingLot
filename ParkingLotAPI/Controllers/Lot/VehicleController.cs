@@ -2,6 +2,7 @@
 using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
+using static ParkingLotAPI.Data.Constants.SizeFareMods;
 
 namespace ParkingLotAPI.Controllers.Lot
 {
@@ -11,6 +12,7 @@ namespace ParkingLotAPI.Controllers.Lot
 	{
 		private readonly IVehicleService _service = service;
 
+		[HttpGet]
 		public async Task<ActionResult<ICollection<VehicleGetDto>>> GetAllVehiclesAsync()
 		{
 			try
@@ -28,6 +30,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpGet("parked")]
 		public async Task<ActionResult<ICollection<VehicleGetDto>>> GetAllParkedVehicles()
 		{
 			try
@@ -45,6 +48,26 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpGet("size")]
+		public async Task<ActionResult<ICollection<VehicleGetDto>>> GetAllVehiclesBySizeAsync(VehicleSize size)
+		{
+			try
+			{
+				CancellationToken cancellation = HttpContext.RequestAborted;
+				ICollection<VehicleGetDto> vehicles = await _service.GetAllVehiclesBySizeAsync(size, cancellation);
+
+				return vehicles.Count == 0 ?
+					NotFound("No vehicles were found with given size.") :
+					Ok(vehicles);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(500, e.Message);
+			}
+		}
+
+
+		[HttpGet("licensePlate")]
 		public async Task<ActionResult<VehicleGetDto>> GetVehicleByLicensePlateAsync(string licensePlate)
 		{
 			try
@@ -62,6 +85,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpPost]
 		public async Task<IActionResult> AddVehicleAsync(VehiclePostPutDto vehicleDto)
 		{
 			try
@@ -79,6 +103,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpPut]
 		public async Task<IActionResult> UpdateVehicleByLicensePlateAsync(VehiclePostPutDto vehicleDto)
 		{
 			try
@@ -88,7 +113,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isUpdated == null ?
 				 NotFound("No vehicle was found with the given license plate.") :
-			 (bool)!isUpdated ?
+				(bool)!isUpdated ?
 				 BadRequest("Vehicle could not be updated.") :
 				 Ok("Vehicle updated successfully.");
 			}
@@ -98,6 +123,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpDelete]
 		public async Task<IActionResult> RemoveVehicleByLicensePlateAsync(string licensePlate)
 		{
 			try

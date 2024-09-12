@@ -2,18 +2,18 @@
 {
 	public static class SizeFareMods
 	{
-		public enum VehicleSizes
+		public enum VehicleSize
 		{
 			Small,
 			Medium,
 			Large
 		}
 
-		public static IReadOnlyDictionary<VehicleSizes, double> VehicleSizeFareMods { get; } = new Dictionary<VehicleSizes, double>()
+		public static IReadOnlyDictionary<VehicleSize, double> VehicleSizeFareMods { get; } = new Dictionary<VehicleSize, double>()
 		{
-			{ VehicleSizes.Small, 1.00 },
-			{ VehicleSizes.Medium, 1.50 },
-			{ VehicleSizes.Large, 2.00 }
+			{ VehicleSize.Small, 1.00 },
+			{ VehicleSize.Medium, 1.50 },
+			{ VehicleSize.Large, 2.00 }
 		};
 	}
 }

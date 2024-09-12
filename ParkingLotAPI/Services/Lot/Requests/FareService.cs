@@ -121,7 +121,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.AddAsync(FareMapper.MapFarePostDtoToModel(fareDto), cancellation);
 				await _context.SaveChangesAsync(cancellation);
 
-				return await _context.Fares.AnyAsync(f => f.StartDate == fareDto.StartDate, cancellation);
+				return true;
 			}
 			catch
 			{
@@ -129,12 +129,12 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> UpdateFareByStartDateAsync(FarePostPutDto fareDto, CancellationToken cancellation)
+		public async Task<bool?> UpdateCurrentFareAsync(FarePostPutDto fareDto, CancellationToken cancellation)
 		{
 			try
 			{
 				FareModel? fare = await _context.Fares
-					.FirstOrDefaultAsync(f => f.StartDate == fareDto.StartDate, cancellation);
+					.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
 
 				if (fare == null)
 					return null;
@@ -142,7 +142,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				FareMapper.MapFarePutDtoToModel(fareDto, fare);
 				await _context.SaveChangesAsync(cancellation);
 
-				return FareMapper.CompareFareModelToPutDto(fare, fareDto);
+				return true;
 			}
 			catch
 			{
@@ -163,8 +163,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				_context.Fares.Remove(fare);
 				await _context.SaveChangesAsync(cancellation);
 
-				return await _context.Fares
-					.AnyAsync(f => f.StartDate == startDate, cancellation);
+				return true;
 			}
 			catch
 			{

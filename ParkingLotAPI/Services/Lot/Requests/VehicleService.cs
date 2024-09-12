@@ -5,6 +5,7 @@ using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
+using static ParkingLotAPI.Data.Constants.SizeFareMods;
 
 namespace ParkingLotAPI.Services.Lot.Requests
 {
@@ -50,6 +51,25 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
+		public async Task<ICollection<VehicleGetDto>> GetAllVehiclesBySizeAsync(VehicleSize size, CancellationToken cancellation)
+		{
+			try
+			{
+				ICollection<VehicleGetDto> vehicles = await _context.Vehicles
+					.Where(v => v.Size == size)
+					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
+					.ToListAsync(cancellation);
+
+				return vehicles.Count == 0 ?
+					[] :
+					vehicles;
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
 		public async Task<VehicleGetDto?> GetVehicleByLicensePlateAsync(string licensePlate, CancellationToken cancellation)
 		{
 			try
@@ -75,8 +95,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.AddAsync(VehicleMapper.MapVehiclePostDtoToModel(vehicleDto), cancellation);
 				await _context.SaveChangesAsync(cancellation);
 
-				return await _context.Vehicles
-					.AnyAsync(v => v.LicensePlate.Equals(vehicleDto.LicensePlate, StringComparison.InvariantCultureIgnoreCase), cancellation);
+				return true;
 			}
 			catch
 			{
@@ -97,7 +116,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				VehicleMapper.MapVehiclePutDtoToModel(vehicleDto, vehicle);
 				await _context.SaveChangesAsync(cancellation);
 
-				return VehicleMapper.CompareVehicleModelToPutDto(vehicle, vehicleDto);
+				return true;
 			}
 			catch
 			{
@@ -118,8 +137,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				_context.Vehicles.Remove(vehicle);
 				await _context.SaveChangesAsync(cancellation);
 
-				return await _context.Vehicles.
-					AnyAsync(v => v.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase));
+				return true;
 			}
 			catch
 			{

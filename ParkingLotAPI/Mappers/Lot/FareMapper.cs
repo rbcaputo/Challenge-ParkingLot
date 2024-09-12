@@ -40,12 +40,5 @@ namespace ParkingLotAPI.Mappers.Lot
 
 			fare.PricePerHour = fareDto.PricePerHour;
 		}
-
-		public static bool CompareFareModelToPutDto(FareModel fare, FarePostPutDto fareDto)
-		{
-			return fare.StartDate == fareDto.StartDate &&
-						 fare.EndDate == fareDto.EndDate &&
-						 fare.PricePerHour == fareDto.PricePerHour;
-		}
 	}
 }

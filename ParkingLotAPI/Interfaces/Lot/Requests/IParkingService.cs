@@ -10,8 +10,8 @@ namespace ParkingLotAPI.Interfaces.Lot.Requests
 		public Task<ICollection<ParkingGetDto>> GetAllParkingsByDurationAsync(TimeSpan duration, CancellationToken cancellation);
 		public Task<ICollection<ParkingGetDto>> GetAllParkingsByCurrentFareAsync(CancellationToken cancellation);
 
-		public Task<bool> AddFareAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation);
-		public Task<bool?> UpdateParkingByLicensePlate(string licensePlate, ParkingPostPutDto parkingDto, CancellationToken cancellation);
-		public Task<bool?> RemoveParkingByLicensePlate(string licensePlate, CancellationToken cancellation);
+		public Task<bool> AddParkingAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation);
+		public Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation);
+		public Task<bool?> RemoveParkingByLicensePlateAsync(string licensePlate, CancellationToken cancellation);
 	}
 }

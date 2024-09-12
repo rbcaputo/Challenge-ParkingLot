@@ -14,7 +14,7 @@ namespace ParkingLotAPI.Interfaces.Lot.Requests
 		public Task<FareModel?> GetCurrentFareModelAsync(CancellationToken cancellation);
 
 		public Task<bool> AddFareAsync(FarePostPutDto fareDto, CancellationToken cancellation);
-		public Task<bool?> UpdateFareByStartDateAsync(FarePostPutDto fareDto, CancellationToken cancellation);
+		public Task<bool?> UpdateCurrentFareAsync(FarePostPutDto fareDto, CancellationToken cancellation);
 		public Task<bool?> RemoveFareByStartDateAsync(DateTime startDate, CancellationToken cancellation);
 	}
 }

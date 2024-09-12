@@ -1,4 +1,5 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Dtos.Min;
 using ParkingLotAPI.Models.Lot;
 
@@ -38,6 +39,23 @@ namespace ParkingLotAPI.Mappers.Lot
 
 				TotalPrice = parking.TotalPrice
 			};
+		}
+
+		public static ParkingModel MapParkingPostDtoToModel(ParkingPostPutDto parkingDto)
+		{
+			return new ParkingModel
+			{
+				Vehicle = parkingDto.Vehicle,
+
+				EntryTime = parkingDto.EntryTime,
+
+				ExitTime = null
+			};
+		}
+
+		public static void MapParkingPutDtoToModel(ParkingPostPutDto parkingDto, ParkingModel parking)
+		{
+			parking.ExitTime = parkingDto.ExitTime;
 		}
 	}
 }

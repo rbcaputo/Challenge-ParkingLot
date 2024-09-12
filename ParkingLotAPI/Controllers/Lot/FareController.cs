@@ -11,6 +11,7 @@ namespace ParkingLotAPI.Controllers.Lot
 	{
 		private readonly IFareService _service = service;
 
+		[HttpGet]
 		public async Task<ActionResult<ICollection<FareGetDto>>> GetAllFaresAsync()
 		{
 			try
@@ -28,6 +29,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpGet("pricePerHour")]
 		public async Task<ActionResult<ICollection<FareGetDto>>> GetAllFaresByPricePerHourAsync(decimal pricePerHour)
 		{
 			try
@@ -45,6 +47,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpGet("startDate")]
 		public async Task<ActionResult<FareGetDto>> GetFareByStartDateAsync(DateTime startDate)
 		{
 			try
@@ -62,6 +65,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpGet("endDate")]
 		public async Task<ActionResult<FareGetDto>> GetFareByEndDateAsync(DateTime endDate)
 		{
 			try
@@ -79,6 +83,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpGet("current")]
 		public async Task<ActionResult<FareGetDto>> GetCurrentFareDtoAsync()
 		{
 			try
@@ -96,6 +101,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpPost]
 		public async Task<IActionResult> AddFareAsync(FarePostPutDto fareDto)
 		{
 			try
@@ -113,18 +119,19 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		public async Task<IActionResult> UpdateFareByStartDateAsync(FarePostPutDto fareDto)
+		[HttpPut]
+		public async Task<IActionResult> UpdateCurrentFareAsync(FarePostPutDto fareDto)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				bool? isUpdated = await _service.UpdateFareByStartDateAsync(fareDto, cancellation);
+				bool? isUpdated = await _service.UpdateCurrentFareAsync(fareDto, cancellation);
 
 				return isUpdated == null ?
-					NotFound("No fare was found with the given start date.") :
+					NotFound("No current fare was found.") :
 				(bool)!isUpdated ?
-					BadRequest("Fare could not be updated.") :
-					Ok("Fare updated successfully.");
+					BadRequest("Current fare could not be updated.") :
+					Ok("Current fare updated successfully.");
 			}
 			catch (Exception ex)
 			{
@@ -132,6 +139,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		[HttpDelete]
 		public async Task<IActionResult> RemoveFareByStartDateAsync(DateTime startDate)
 		{
 			try
@@ -140,7 +148,7 @@ namespace ParkingLotAPI.Controllers.Lot
 				bool? isRemoved = await _service.RemoveFareByStartDateAsync(startDate, cancellation);
 
 				return isRemoved == null ?
-					NotFound("No fare was found with the given start date.") :
+					NotFound("No fare was found with given start date.") :
 				(bool)!isRemoved ?
 					BadRequest("Fare could not be removed.") :
 					Ok("Fare removed successfully.");
