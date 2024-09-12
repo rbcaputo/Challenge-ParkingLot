@@ -7,7 +7,7 @@ namespace ParkingLotAPI.Dtos.Lot.Get
 	{
 		public string LicensePlate { get; set; } = string.Empty;
 
-		public VehicleSizes Size { get; set; }
+		public VehicleSize Size { get; set; }
 
 		public string Brand { get; set; } = string.Empty;
 
