@@ -5,7 +5,7 @@ namespace ParkingLotAPI.Models.Lot
 {
 	public class FareModel
 	{
-		private DateTime _startDate = DateTime.Now;
+		private DateTime _startDate = DateTime.UtcNow;
 
 		private DateTime? _endDate;
 

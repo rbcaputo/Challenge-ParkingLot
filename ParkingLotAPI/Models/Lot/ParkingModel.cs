@@ -1,4 +1,5 @@
-﻿using ParkingLotAPI.Utils;
+﻿using ParkingLotAPI.Interfaces.Lot.Requests;
+using ParkingLotAPI.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +22,7 @@ namespace ParkingLotAPI.Models.Lot
 		[ForeignKey(nameof(ParkingModel))]
 		public int VehicleId { get; set; }
 
-		public DateTime EntryTime { get; set; } = DateTime.Now;
+		public DateTime EntryTime { get; set; } = DateTime.UtcNow;
 
 		public DateTime? ExitTime
 		{
@@ -29,13 +30,30 @@ namespace ParkingLotAPI.Models.Lot
 			set
 			{
 				ValidatorClass.ValidateExitTime(EntryTime, value);
-
 				_exitTime = value;
 			}
 		}
 
-		public TimeSpan Duration => (ExitTime ?? DateTime.Now) - EntryTime;
+		public TimeSpan Duration => (ExitTime ?? DateTime.UtcNow) - EntryTime;
 
-		public decimal TotalPrice => ValidatorClass.CalculateTotalPrice(this);
+		public decimal TotalPrice => CalculatorClass.CalculateTotalPrice(this);
+
+		public async Task SetCurrentFareAsync(IFareService service, CancellationToken cancellation)
+		{
+			try
+			{
+				FareModel? fare = await service.GetCurrentFareModelAsync(cancellation);
+
+				if (fare == null)
+					throw new InvalidOperationException($"{nameof(fare)} cannot be null.");
+
+				Fare = fare;
+				FareId = fare.Id;
+			}
+			catch
+			{
+				throw;
+			}
+		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
 
-namespace ParkingLotAPI.Interfaces.Lot.HttpRequests
+namespace ParkingLotAPI.Interfaces.Lot.Requests
 {
 	public interface IVehicleService
 	{

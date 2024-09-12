@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
-using ParkingLotAPI.Interfaces.Lot.HttpRequests;
+using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class FareController(IFareService service) : ControllerBase
 	{
@@ -71,6 +71,23 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return fare == null ?
 					NotFound("Fare not found with given end date.") :
+					Ok(fare);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+			}
+		}
+
+		public async Task<ActionResult<FareGetDto>> GetCurrentFareDtoAsync()
+		{
+			try
+			{
+				CancellationToken cancellation = HttpContext.RequestAborted;
+				FareGetDto? fare = await _service.GetCurrentFareDtoAsync(cancellation);
+
+				return fare == null ?
+					NotFound("No current fare was found.") :
 					Ok(fare);
 			}
 			catch (Exception ex)

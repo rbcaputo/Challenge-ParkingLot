@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
-using ParkingLotAPI.Interfaces.Lot.HttpRequests;
+using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
 {

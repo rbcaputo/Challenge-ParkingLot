@@ -2,7 +2,7 @@
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
-using ParkingLotAPI.Interfaces.Lot.HttpRequests;
+using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
 

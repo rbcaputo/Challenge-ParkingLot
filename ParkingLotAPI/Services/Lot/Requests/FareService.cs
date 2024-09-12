@@ -2,7 +2,7 @@
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
-using ParkingLotAPI.Interfaces.Lot.HttpRequests;
+using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
 
@@ -54,9 +54,8 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				FareGetDto? fare = await _context.Fares
-					.Where(f => f.StartDate == startDate)
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
-					.FirstOrDefaultAsync(cancellation);
+					.FirstOrDefaultAsync(f => f.StartDate == startDate, cancellation);
 
 				return fare ?? null;
 			}
@@ -71,10 +70,40 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				FareGetDto? fare = await _context.Fares
-					.Where(f => f.EndDate.HasValue &&
-											f.EndDate.Value == endDate)
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
-					.FirstOrDefaultAsync(cancellation);
+					.FirstOrDefaultAsync(f => f.EndDate.HasValue &&
+																		f.EndDate.Value == endDate, cancellation);
+
+				return fare ?? null;
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+		public async Task<FareGetDto?> GetCurrentFareDtoAsync(CancellationToken cancellation)
+		{
+			try
+			{
+				FareGetDto? fare = await _context.Fares
+					.Select(f => FareMapper.MapFareModelToGetDto(f))
+					.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
+
+				return fare ?? null;
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+		public async Task<FareModel?> GetCurrentFareModelAsync(CancellationToken cancellation)
+		{
+			try
+			{
+				FareModel? fare = await _context.Fares
+					.FirstOrDefaultAsync(f => f.IsCurrent);
 
 				return fare ?? null;
 			}
