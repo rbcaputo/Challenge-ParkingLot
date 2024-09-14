@@ -122,15 +122,15 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> RemoveParkingByLicensePlateAsync(string licensePlate)
+		public async Task<IActionResult> RemoveParkingByLicensePlateEntryTimeAsync(string licensePlate, DateTime entryTime)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				bool? isRemoved = await _service.RemoveParkingByLicensePlateAsync(licensePlate, cancellation);
+				bool? isRemoved = await _service.RemoveParkingByLicensePlateEntryTimeAsync(licensePlate, entryTime, cancellation);
 
 				return isRemoved == null ?
-					NotFound("No parking session was found with given license plate.") :
+					NotFound("No parking session was found with given license plate and entry time.") :
 					(bool)!isRemoved ?
 					BadRequest("Parking session could not be removed.") :
 					Ok("Parking session removed successfully.");

@@ -1,6 +1,7 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Models.Lot;
+using ParkingLotAPI.Utils;
 
 namespace ParkingLotAPI.Mappers.Lot
 {
@@ -32,29 +33,29 @@ namespace ParkingLotAPI.Mappers.Lot
 		{
 			return new VehicleModel
 			{
-				LicensePlate = vehicleDto.LicensePlate,
+				LicensePlate = vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant(),
 
 				Size = vehicleDto.Size,
 
-				Brand = vehicleDto.Brand,
+				Brand = StringProcessorClass.ToTitleCase(vehicleDto.Brand),
 
-				Model = vehicleDto.Model,
+				Model = StringProcessorClass.ToTitleCase(vehicleDto.Model),
 
-				Color = vehicleDto.Color
+				Color = StringProcessorClass.ToTitleCase(vehicleDto.Color)
 			};
 		}
 
 		public static void MapVehiclePutDtoToModel(VehiclePostPutDto vehicleDto, VehicleModel vehicle)
 		{
-			vehicle.LicensePlate = vehicleDto.LicensePlate;
+			vehicle.LicensePlate = vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant();
 
 			vehicle.Size = vehicleDto.Size;
 
-			vehicle.Brand = vehicleDto.Brand;
+			vehicle.Brand = StringProcessorClass.ToTitleCase(vehicleDto.Brand);
 
-			vehicle.Model = vehicleDto.Model;
+			vehicle.Model = StringProcessorClass.ToTitleCase(vehicleDto.Model);
 
-			vehicle.Color = vehicleDto.Color;
+			vehicle.Color = StringProcessorClass.ToTitleCase(vehicleDto.Color);
 		}
 	}
 }

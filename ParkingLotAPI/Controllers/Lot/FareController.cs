@@ -101,6 +101,8 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
+		// GetCurrentFareModelAsync()
+
 		[HttpPost]
 		public async Task<IActionResult> AddFareAsync(FarePostPutDto fareDto)
 		{

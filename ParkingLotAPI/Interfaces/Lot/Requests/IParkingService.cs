@@ -12,6 +12,6 @@ namespace ParkingLotAPI.Interfaces.Lot.Requests
 
 		public Task<bool> AddParkingAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation);
 		public Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation);
-		public Task<bool?> RemoveParkingByLicensePlateAsync(string licensePlate, CancellationToken cancellation);
+		public Task<bool?> RemoveParkingByLicensePlateEntryTimeAsync(string licensePlate, DateTime entryTime, CancellationToken cancellation);
 	}
 }

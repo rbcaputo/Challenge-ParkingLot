@@ -55,7 +55,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			{
 				FareGetDto? fare = await _context.Fares
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
-					.FirstOrDefaultAsync(f => f.StartDate == startDate, cancellation);
+					.FirstOrDefaultAsync(f => f.StartDate == startDate.Date, cancellation);
 
 				return fare ?? null;
 			}
@@ -72,7 +72,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				FareGetDto? fare = await _context.Fares
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
 					.FirstOrDefaultAsync(f => f.EndDate.HasValue &&
-																		f.EndDate.Value == endDate, cancellation);
+																		f.EndDate.Value == endDate.Date, cancellation);
 
 				return fare ?? null;
 			}
@@ -102,8 +102,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				FareModel? fare = await _context.Fares
-					.FirstOrDefaultAsync(f => f.IsCurrent);
+				FareModel? fare = await _context.Fares.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
 
 				return fare ?? null;
 			}
@@ -117,8 +116,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				await _context.Fares
-					.AddAsync(FareMapper.MapFarePostDtoToModel(fareDto), cancellation);
+				await _context.Fares.AddAsync(FareMapper.MapFarePostDtoToModel(fareDto), cancellation);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -133,8 +131,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				FareModel? fare = await _context.Fares
-					.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
+				FareModel? fare = await _context.Fares.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
 
 				if (fare == null)
 					return null;
@@ -154,8 +151,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				FareModel? fare = await _context.Fares
-					.FirstOrDefaultAsync(f => f.StartDate == startDate, cancellation);
+				FareModel? fare = await _context.Fares.FirstOrDefaultAsync(f => f.StartDate == startDate.Date, cancellation);
 
 				if (fare == null)
 					return null;

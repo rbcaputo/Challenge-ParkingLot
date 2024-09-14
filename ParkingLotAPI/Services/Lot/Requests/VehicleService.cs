@@ -75,7 +75,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				VehicleGetDto? vehicle = await _context.Vehicles
-					.Where(v => v.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase))
+					.Where(v => v.LicensePlate.Equals(licensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase))
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.FirstOrDefaultAsync(cancellation);
 
@@ -91,8 +91,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				await _context.Vehicles
-					.AddAsync(VehicleMapper.MapVehiclePostDtoToModel(vehicleDto), cancellation);
+				await _context.Vehicles.AddAsync(VehicleMapper.MapVehiclePostDtoToModel(vehicleDto), cancellation);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -107,8 +106,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				VehicleModel? vehicle = await _context.Vehicles
-					.FirstOrDefaultAsync(v => v.LicensePlate.Equals(vehicleDto.LicensePlate, StringComparison.InvariantCultureIgnoreCase), cancellation);
+				VehicleModel? vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(vehicleDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
 
 				if (vehicle == null)
 					return null;
@@ -128,8 +126,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				VehicleModel? vehicle = await _context.Vehicles
-					.FirstOrDefaultAsync(v => v.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase));
+				VehicleModel? vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(licensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
 
 				if (vehicle == null)
 					return null;

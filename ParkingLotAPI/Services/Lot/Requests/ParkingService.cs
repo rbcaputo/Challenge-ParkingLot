@@ -106,8 +106,8 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ParkingModel? currentParking = await _context.Parkings
-					.Where(p => p.Vehicle.LicensePlate.Equals(parkingDto.Vehicle.LicensePlate, StringComparison.InvariantCultureIgnoreCase) &&
-										 p.Vehicle.IsParked)
+					.Where(p => p.Vehicle.LicensePlate.Equals(parkingDto.Vehicle.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase) &&
+										  p.Vehicle.IsParked)
 					.FirstOrDefaultAsync(cancellation);
 
 				if (currentParking == null)
@@ -124,12 +124,12 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> RemoveParkingByLicensePlateAsync(string licensePlate, CancellationToken cancellation)
+		public async Task<bool?> RemoveParkingByLicensePlateEntryTimeAsync(string licensePlate, DateTime entryTime, CancellationToken cancellation)
 		{
 			try
 			{
-				ParkingModel? parking = await _context.Parkings
-					.FirstOrDefaultAsync(p => p.Vehicle.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase), cancellation);
+				ParkingModel? parking = await _context.Parkings.FirstOrDefaultAsync(p => p.Vehicle.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase) &&
+																																								 p.EntryTime == entryTime, cancellation);
 
 				if (parking == null)
 					return null;

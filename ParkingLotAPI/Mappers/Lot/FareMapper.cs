@@ -10,7 +10,7 @@ namespace ParkingLotAPI.Mappers.Lot
 		{
 			return new FareGetDto
 			{
-				StartDate = fare.StartDate,
+				StartDate = fare.StartDate.Date,
 
 				EndDate = fare.EndDate,
 
@@ -24,7 +24,7 @@ namespace ParkingLotAPI.Mappers.Lot
 		{
 			return new FareModel
 			{
-				StartDate = fareDto.StartDate,
+				StartDate = fareDto.StartDate.Date,
 
 				EndDate = fareDto.EndDate,
 
@@ -34,7 +34,7 @@ namespace ParkingLotAPI.Mappers.Lot
 
 		public static void MapFarePutDtoToModel(FarePostPutDto fareDto, FareModel fare)
 		{
-			fare.StartDate = fareDto.StartDate;
+			fare.StartDate = fareDto.StartDate.Date;
 
 			fare.EndDate = fareDto.EndDate;
 
