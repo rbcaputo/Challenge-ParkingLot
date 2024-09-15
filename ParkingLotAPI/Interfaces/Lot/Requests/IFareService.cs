@@ -1,6 +1,5 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
-using ParkingLotAPI.Models.Lot;
 
 namespace ParkingLotAPI.Interfaces.Lot.Requests
 {
@@ -10,8 +9,7 @@ namespace ParkingLotAPI.Interfaces.Lot.Requests
 		public Task<ICollection<FareGetDto>> GetAllFaresByPricePerHourAsync(decimal pricePerHour, CancellationToken cancellation);
 		public Task<FareGetDto?> GetFareByStartDateAsync(DateTime startDate, CancellationToken cancellation);
 		public Task<FareGetDto?> GetFareByEndDateAsync(DateTime endDate, CancellationToken cancellation);
-		public Task<FareGetDto?> GetCurrentFareDtoAsync(CancellationToken cancellation);
-		public Task<FareModel?> GetCurrentFareModelAsync(CancellationToken cancellation);
+		public Task<FareGetDto?> GetCurrentFareAsync(CancellationToken cancellation);
 
 		public Task<bool> AddFareAsync(FarePostPutDto fareDto, CancellationToken cancellation);
 		public Task<bool?> UpdateCurrentFareAsync(FarePostPutDto fareDto, CancellationToken cancellation);

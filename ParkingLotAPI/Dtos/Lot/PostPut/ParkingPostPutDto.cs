@@ -1,10 +1,8 @@
-﻿using ParkingLotAPI.Models.Lot;
-
-namespace ParkingLotAPI.Dtos.Lot.PostPut
+﻿namespace ParkingLotAPI.Dtos.Lot.PostPut
 {
 	public class ParkingPostPutDto
 	{
-		public VehicleModel Vehicle { get; set; } = new();
+		public string LicensePlate { get; set; } = string.Empty;
 
 		public DateTime EntryTime { get; set; } = DateTime.UtcNow;
 

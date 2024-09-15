@@ -91,6 +91,11 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
+				VehicleModel? vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(vehicleDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
+
+				if (vehicle != null)
+					throw new InvalidOperationException($"{nameof(AddVehicleAsync)}: {nameof(vehicle)} with same license plate already exists.");
+
 				await _context.Vehicles.AddAsync(VehicleMapper.MapVehiclePostDtoToModel(vehicleDto), cancellation);
 				await _context.SaveChangesAsync(cancellation);
 

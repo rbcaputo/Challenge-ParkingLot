@@ -26,7 +26,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -94,12 +94,12 @@ namespace ParkingLotAPI.Controllers.Lot
 				bool isAdded = await _service.AddVehicleAsync(vehicleDto, cancellation);
 
 				return !isAdded ?
-					BadRequest("New vehicle could not be added.") :
+					StatusCode(500, "New vehicle could not be added.") :
 					Ok("New vehicle added successfully.");
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -114,12 +114,12 @@ namespace ParkingLotAPI.Controllers.Lot
 				return isUpdated == null ?
 				 NotFound("No vehicle was found with the given license plate.") :
 				(bool)!isUpdated ?
-				 BadRequest("Vehicle could not be updated.") :
+				 StatusCode(500, "Vehicle could not be updated.") :
 				 Ok("Vehicle updated successfully.");
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -134,12 +134,12 @@ namespace ParkingLotAPI.Controllers.Lot
 				return isRemoved == null ?
 					NotFound("No vehicle was found with the given license plate.") :
 				(bool)!isRemoved ?
-					BadRequest("Vehicle could not be removed.") :
+					StatusCode(500, "Vehicle could not be removed.") :
 					Ok("Vehicle removed successfully.");
 			}
 			catch (Exception e)
 			{
-				return StatusCode(500, e.Message);
+				return BadRequest(e.Message);
 			}
 		}
 	}

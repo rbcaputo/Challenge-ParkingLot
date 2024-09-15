@@ -6,8 +6,9 @@ namespace ParkingLotAPI.Utils
 	{
 		public static string ToTitleCase(string input)
 		{
-			if (string.IsNullOrWhiteSpace(input))
-				throw new ArgumentException($"{nameof(input)} cannot be null, empty or white space.");
+			if (string.IsNullOrEmpty(input) ||
+					string.IsNullOrWhiteSpace(input))
+				throw new ArgumentException($"{nameof(ToTitleCase)}: {nameof(input)} cannot be null, empty or white space.");
 
 			TextInfo textInfo = CultureInfo.InvariantCulture.TextInfo;
 

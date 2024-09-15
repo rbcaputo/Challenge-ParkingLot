@@ -90,7 +90,10 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				await _context.AddAsync(ParkingMapper.MapParkingPostDtoToModel(parkingDto), cancellation);
+				ParkingModel newParking = await ParkingMapper.MapParkingPostDtoToModel(parkingDto, _context, cancellation);
+
+				await newParking.SetCurrentFareAsync(_context, cancellation);
+				await _context.AddAsync(newParking, cancellation);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -106,7 +109,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ParkingModel? currentParking = await _context.Parkings
-					.Where(p => p.Vehicle.LicensePlate.Equals(parkingDto.Vehicle.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase) &&
+					.Where(p => p.Vehicle!.LicensePlate.Equals(parkingDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase) &&
 										  p.Vehicle.IsParked)
 					.FirstOrDefaultAsync(cancellation);
 
@@ -128,7 +131,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				ParkingModel? parking = await _context.Parkings.FirstOrDefaultAsync(p => p.Vehicle.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase) &&
+				ParkingModel? parking = await _context.Parkings.FirstOrDefaultAsync(p => p.Vehicle!.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase) &&
 																																								 p.EntryTime == entryTime, cancellation);
 
 				if (parking == null)

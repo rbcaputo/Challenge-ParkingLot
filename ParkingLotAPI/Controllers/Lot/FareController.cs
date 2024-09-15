@@ -23,9 +23,9 @@ namespace ParkingLotAPI.Controllers.Lot
 					NotFound("No fares were found.") :
 					Ok(fares);
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -41,9 +41,9 @@ namespace ParkingLotAPI.Controllers.Lot
 					NotFound("No fares were found with given price per hour.") :
 					Ok(fares);
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -59,9 +59,9 @@ namespace ParkingLotAPI.Controllers.Lot
 					NotFound("Fare not found with given start date.") :
 					Ok(fare);
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -77,9 +77,9 @@ namespace ParkingLotAPI.Controllers.Lot
 					NotFound("Fare not found with given end date.") :
 					Ok(fare);
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -89,19 +89,17 @@ namespace ParkingLotAPI.Controllers.Lot
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				FareGetDto? fare = await _service.GetCurrentFareDtoAsync(cancellation);
+				FareGetDto? fare = await _service.GetCurrentFareAsync(cancellation);
 
 				return fare == null ?
 					NotFound("No current fare was found.") :
 					Ok(fare);
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
-
-		// GetCurrentFareModelAsync()
 
 		[HttpPost]
 		public async Task<IActionResult> AddFareAsync(FarePostPutDto fareDto)
@@ -112,12 +110,12 @@ namespace ParkingLotAPI.Controllers.Lot
 				bool isAdded = await _service.AddFareAsync(fareDto, cancellation);
 
 				return !isAdded ?
-					BadRequest("New fare could not be added.") :
+					StatusCode(500, "New fare could not be added.") :
 					Ok("New fare added successfully.");
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -132,12 +130,12 @@ namespace ParkingLotAPI.Controllers.Lot
 				return isUpdated == null ?
 					NotFound("No current fare was found.") :
 				(bool)!isUpdated ?
-					BadRequest("Current fare could not be updated.") :
+					StatusCode(500, "Current fare could not be updated.") :
 					Ok("Current fare updated successfully.");
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 
@@ -152,12 +150,12 @@ namespace ParkingLotAPI.Controllers.Lot
 				return isRemoved == null ?
 					NotFound("No fare was found with given start date.") :
 				(bool)!isRemoved ?
-					BadRequest("Fare could not be removed.") :
+					StatusCode(500, "Fare could not be removed.") :
 					Ok("Fare removed successfully.");
 			}
-			catch (Exception ex)
+			catch (Exception e)
 			{
-				return StatusCode(500, ex.Message);
+				return BadRequest(e.Message);
 			}
 		}
 	}

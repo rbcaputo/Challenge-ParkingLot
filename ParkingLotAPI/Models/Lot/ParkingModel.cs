@@ -1,4 +1,5 @@
-﻿using ParkingLotAPI.Interfaces.Lot.Requests;
+﻿using Microsoft.EntityFrameworkCore;
+using ParkingLotAPI.Data;
 using ParkingLotAPI.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +18,7 @@ namespace ParkingLotAPI.Models.Lot
 		[ForeignKey(nameof(Fare))]
 		public int FareId { get; set; }
 
-		public VehicleModel Vehicle { get; set; } = new();
+		public VehicleModel? Vehicle { get; set; } = new();
 
 		[ForeignKey(nameof(ParkingModel))]
 		public int VehicleId { get; set; }
@@ -38,14 +39,14 @@ namespace ParkingLotAPI.Models.Lot
 
 		public decimal TotalPrice => CalculatorClass.CalculateTotalPrice(this);
 
-		public async Task SetCurrentFareAsync(IFareService service, CancellationToken cancellation)
+		public async Task SetCurrentFareAsync(DataContext context, CancellationToken cancellation)
 		{
 			try
 			{
-				FareModel? fare = await service.GetCurrentFareModelAsync(cancellation);
+				FareModel? fare = await context.Fares.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
 
 				if (fare == null)
-					throw new InvalidOperationException($"{nameof(fare)} cannot be null.");
+					throw new InvalidOperationException($"{nameof(SetCurrentFareAsync)}: {nameof(fare)} cannot be null.");
 
 				Fare = fare;
 				FareId = fare.Id;

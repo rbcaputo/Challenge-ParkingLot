@@ -82,27 +82,13 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<FareGetDto?> GetCurrentFareDtoAsync(CancellationToken cancellation)
+		public async Task<FareGetDto?> GetCurrentFareAsync(CancellationToken cancellation)
 		{
 			try
 			{
 				FareGetDto? fare = await _context.Fares
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
 					.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
-
-				return fare ?? null;
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
-		public async Task<FareModel?> GetCurrentFareModelAsync(CancellationToken cancellation)
-		{
-			try
-			{
-				FareModel? fare = await _context.Fares.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
 
 				return fare ?? null;
 			}

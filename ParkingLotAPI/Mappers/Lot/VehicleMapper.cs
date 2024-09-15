@@ -33,7 +33,7 @@ namespace ParkingLotAPI.Mappers.Lot
 		{
 			return new VehicleModel
 			{
-				LicensePlate = vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant(),
+				LicensePlate = StringProcessorClass.ToTitleCase(vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant()),
 
 				Size = vehicleDto.Size,
 
@@ -47,7 +47,7 @@ namespace ParkingLotAPI.Mappers.Lot
 
 		public static void MapVehiclePutDtoToModel(VehiclePostPutDto vehicleDto, VehicleModel vehicle)
 		{
-			vehicle.LicensePlate = vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant();
+			vehicle.LicensePlate = StringProcessorClass.ToTitleCase(vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant());
 
 			vehicle.Size = vehicleDto.Size;
 
