@@ -11,12 +11,12 @@ namespace ParkingLotAPI.Models.Lot
 		[Key]
 		public int Id { get; private set; }
 
-		public FareModel Fare { get; set; } = new();
+		public required FareModel Fare { get; set; }
 
 		[ForeignKey(nameof(Fare))]
 		public int FareId { get; set; }
 
-		public VehicleModel Vehicle { get; set; } = new();
+		public required VehicleModel Vehicle { get; set; }
 
 		[ForeignKey(nameof(Vehicle))]
 		public int VehicleId { get; set; }

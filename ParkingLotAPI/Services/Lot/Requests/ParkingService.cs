@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using ParkingLotAPI.Data;
@@ -106,7 +107,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				ParkingModel parking = await ParkingMapper.MapParkingPostDtoToModel(parkingDto, _context, cancellation);
 
 				await _context.AddAsync(parking, cancellation);
-				parking.Vehicle.SetIsParked();
+				parking.Vehicle.IsParked = ValidatorClass.CheckIfVechileIsParked(parking.Vehicle);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -124,6 +125,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				ParkingModel? parking = await _context.Parkings
 					.Where(p => p.Vehicle.LicensePlate == parkingDto.LicensePlate.Replace("-", "").ToUpper() &&
 											p.ExitTime == null)
+					.Include(p => p.Fare)
 					.Include(p => p.Vehicle)
 					.FirstOrDefaultAsync(cancellation);
 
@@ -131,8 +133,6 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					return null;
 
 				ParkingMapper.MapParkingPutDtoToModel(parkingDto, parking);
-				parking.Vehicle.SetIsParked();
-				
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -150,6 +150,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				ParkingModel? parking = await _context.Parkings
 					.Where(p => p.Vehicle.LicensePlate == licensePlate.Replace("-", "").ToUpper() &&
 											p.EntryTime == entryTime)
+					.Include(p => p.Fare)
 					.Include(p => p.Vehicle)
 					.FirstOrDefaultAsync(cancellation);
 
@@ -162,7 +163,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				_context.Parkings.Remove(parking);
 
 				if (vehicle.Parkings.Count != 0)
-					vehicle.SetIsParked();
+					ValidatorClass.CheckIfVechileIsParked(vehicle);
 
 				await _context.SaveChangesAsync(cancellation);
 

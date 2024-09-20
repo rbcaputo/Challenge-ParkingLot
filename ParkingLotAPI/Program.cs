@@ -17,7 +17,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
 {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("Local"));
+	options.UseSqlServer(builder.Configuration.GetConnectionString("Local"), sqlOptions =>
+	{
+		sqlOptions.EnableRetryOnFailure(
+			maxRetryCount: 6,
+			maxRetryDelay: TimeSpan.FromSeconds(30),
+			errorNumbersToAdd: null
+		);
+	});
 });
 builder.Services.AddCors(options =>
 {

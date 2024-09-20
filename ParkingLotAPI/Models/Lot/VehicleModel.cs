@@ -38,10 +38,5 @@ namespace ParkingLotAPI.Models.Lot
 		public ICollection<ParkingModel> Parkings { get; set; } = [];
 
 		public bool IsParked { get; set; }
-
-		public void SetIsParked()
-		{
-			IsParked = ValidatorClass.CheckIfVechileIsParked(this);
-		}
 	}
 }

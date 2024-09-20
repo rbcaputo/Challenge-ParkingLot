@@ -48,6 +48,7 @@ namespace ParkingLotAPI.Mappers.Lot
 			{
 				FareModel? fare = await context.Fares
 					.Where(f => f.IsCurrent)
+					.Include(f => f.Parkings)
 					.FirstOrDefaultAsync(cancellation);
 
 				if (fare == null)
@@ -85,8 +86,10 @@ namespace ParkingLotAPI.Mappers.Lot
 			parking.ExitTime = parkingDto.ExitTime;
 
 			parking.Duration = CalculatorClass.CalculateDuration(parking);
-			
+
 			parking.TotalPrice = CalculatorClass.CalculateTotalPrice(parking);
+
+			parking.Vehicle.IsParked = ValidatorClass.CheckIfVechileIsParked(parking.Vehicle);
 		}
 	}
 }

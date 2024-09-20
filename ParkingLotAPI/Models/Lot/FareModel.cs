@@ -47,10 +47,5 @@ namespace ParkingLotAPI.Models.Lot
 		public ICollection<ParkingModel> Parkings { get; set; } = [];
 
 		public bool IsCurrent { get; set; }
-
-		public void SetIsCurrent()
-		{
-			IsCurrent = ValidatorClass.CheckIfFareIsCurrent(this);
-		}
 	}
 }

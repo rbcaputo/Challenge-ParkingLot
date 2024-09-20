@@ -5,6 +5,7 @@ using ParkingLotAPI.Dtos.Lot.PostPut.Fare;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
+using ParkingLotAPI.Utils;
 
 namespace ParkingLotAPI.Services.Lot.Requests
 {
@@ -108,7 +109,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				FareModel fare = FareMapper.MapFarePostDtoToModel(fareDto);
 
 				await _context.Fares.AddAsync(fare, cancellation);
-				fare.SetIsCurrent();
+				fare.IsCurrent = ValidatorClass.CheckIfFareIsCurrent(fare);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;

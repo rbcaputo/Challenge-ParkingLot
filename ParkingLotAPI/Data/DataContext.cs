@@ -11,6 +11,8 @@ namespace ParkingLotAPI.Data
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
+			base.OnModelCreating(builder);
+
 			builder.Entity<ParkingModel>()
 				.HasOne(p => p.Vehicle)
 				.WithMany(v => v.Parkings)
@@ -36,8 +38,6 @@ namespace ParkingLotAPI.Data
 			builder.Entity<ParkingModel>()
 				.Property(p => p.TotalPrice)
 				.HasColumnType("decimal(18, 2)");
-
-			base.OnModelCreating(builder);
 		}
 	}
 }

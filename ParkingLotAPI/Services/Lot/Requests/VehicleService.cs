@@ -5,6 +5,7 @@ using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
+using ParkingLotAPI.Utils;
 using static ParkingLotAPI.Data.Constants.SizeFareMods;
 
 namespace ParkingLotAPI.Services.Lot.Requests
@@ -101,7 +102,10 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				if (vehicle != null)
 					throw new InvalidOperationException($"{nameof(VehicleService)}: {nameof(AddVehicleAsync)}: {nameof(vehicle)} with same license plate already exists.");
 
-				await _context.Vehicles.AddAsync(VehicleMapper.MapVehiclePostDtoToModel(vehicleDto), cancellation);
+				VehicleModel newVehicle = VehicleMapper.MapVehiclePostDtoToModel(vehicleDto);
+
+				await _context.Vehicles.AddAsync(newVehicle, cancellation);
+				newVehicle.IsParked = ValidatorClass.CheckIfVechileIsParked(newVehicle);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;

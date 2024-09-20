@@ -1,6 +1,7 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut.Fare;
 using ParkingLotAPI.Models.Lot;
+using ParkingLotAPI.Utils;
 
 namespace ParkingLotAPI.Mappers.Lot
 {
@@ -28,7 +29,7 @@ namespace ParkingLotAPI.Mappers.Lot
 
 				EndDate = fareDto.EndDate,
 
-				PricePerHour = fareDto.PricePerHour
+				PricePerHour = fareDto.PricePerHour,
 			};
 		}
 
@@ -38,7 +39,7 @@ namespace ParkingLotAPI.Mappers.Lot
 
 			fare.PricePerHour = fareDto.PricePerHour;
 
-			fare.SetIsCurrent();
+			fare.IsCurrent = ValidatorClass.CheckIfFareIsCurrent(fare);
 		}
 	}
 }
