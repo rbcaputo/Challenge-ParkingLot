@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
+using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
+using ParkingLotAPI.Utils;
 
 namespace ParkingLotAPI.Services.Lot.Requests
 {
@@ -17,6 +20,8 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ICollection<ParkingGetDto> parkings = await _context.Parkings
+					.Include(p => p.Fare)
+					.Include(p => p.Vehicle)
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
@@ -35,6 +40,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ICollection<ParkingGetDto> parkings = await _context.Parkings
+					.Where(p => p.Fare.PricePerHour == pricePerHour)
+					.Include(p => p.Fare)
+					.Include(p => p.Vehicle)
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
@@ -53,7 +61,10 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ICollection<ParkingGetDto> parkings = await _context.Parkings
-					.Where(p => p.Duration == duration)
+					.Where(p => p.Duration.HasValue &&
+											p.Duration.Value.TotalHours == duration.TotalHours)
+					.Include(p => p.Fare)
+					.Include(p => p.Vehicle)
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
@@ -73,6 +84,8 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			{
 				ICollection<ParkingGetDto> parkings = await _context.Parkings
 					.Where(p => p.Fare.IsCurrent)
+					.Include(p => p.Fare)
+					.Include(p => p.Vehicle)
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
@@ -86,14 +99,14 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool> AddParkingAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation)
+		public async Task<bool> AddParkingAsync(ParkingPostDto parkingDto, CancellationToken cancellation)
 		{
 			try
 			{
-				ParkingModel newParking = await ParkingMapper.MapParkingPostDtoToModel(parkingDto, _context, cancellation);
+				ParkingModel parking = await ParkingMapper.MapParkingPostDtoToModel(parkingDto, _context, cancellation);
 
-				await newParking.SetCurrentFareAsync(_context, cancellation);
-				await _context.AddAsync(newParking, cancellation);
+				await _context.AddAsync(parking, cancellation);
+				parking.Vehicle.SetIsParked();
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -104,19 +117,22 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation)
+		public async Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPutDto parkingDto, CancellationToken cancellation)
 		{
 			try
 			{
-				ParkingModel? currentParking = await _context.Parkings
-					.Where(p => p.Vehicle!.LicensePlate.Equals(parkingDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase) &&
-										  p.Vehicle.IsParked)
+				ParkingModel? parking = await _context.Parkings
+					.Where(p => p.Vehicle.LicensePlate == parkingDto.LicensePlate.Replace("-", "").ToUpper() &&
+											p.ExitTime == null)
+					.Include(p => p.Vehicle)
 					.FirstOrDefaultAsync(cancellation);
 
-				if (currentParking == null)
+				if (parking == null)
 					return null;
 
-				ParkingMapper.MapParkingPutDtoToModel(parkingDto, currentParking);
+				ParkingMapper.MapParkingPutDtoToModel(parkingDto, parking);
+				parking.Vehicle.SetIsParked();
+				
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -131,13 +147,23 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				ParkingModel? parking = await _context.Parkings.FirstOrDefaultAsync(p => p.Vehicle!.LicensePlate.Equals(licensePlate, StringComparison.InvariantCultureIgnoreCase) &&
-																																								 p.EntryTime == entryTime, cancellation);
+				ParkingModel? parking = await _context.Parkings
+					.Where(p => p.Vehicle.LicensePlate == licensePlate.Replace("-", "").ToUpper() &&
+											p.EntryTime == entryTime)
+					.Include(p => p.Vehicle)
+					.FirstOrDefaultAsync(cancellation);
+
 
 				if (parking == null)
 					return null;
 
+				VehicleModel vehicle = parking.Vehicle;
+
 				_context.Parkings.Remove(parking);
+
+				if (vehicle.Parkings.Count != 0)
+					vehicle.SetIsParked();
+
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;

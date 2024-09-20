@@ -18,6 +18,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ICollection<VehicleGetDto> vehicles = await _context.Vehicles
+					.Include(v => v.Parkings)
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.ToListAsync(cancellation);
 
@@ -37,7 +38,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				ICollection<VehicleGetDto> vehicles = await _context.Vehicles
-					.Where(v => v.IsParked == true)
+					.Where(v => v.IsParked)
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.ToListAsync(cancellation);
 
@@ -57,6 +58,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			{
 				ICollection<VehicleGetDto> vehicles = await _context.Vehicles
 					.Where(v => v.Size == size)
+					.Include(v => v.Parkings)
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.ToListAsync(cancellation);
 
@@ -75,7 +77,8 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			try
 			{
 				VehicleGetDto? vehicle = await _context.Vehicles
-					.Where(v => v.LicensePlate.Equals(licensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase))
+					.Where(v => v.LicensePlate == licensePlate.Replace("-", "").ToUpper())
+					.Include(v => v.Parkings)
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.FirstOrDefaultAsync(cancellation);
 
@@ -91,10 +94,12 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				VehicleModel? vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(vehicleDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
+				VehicleModel? vehicle = await _context.Vehicles
+					.Where(v => v.LicensePlate == vehicleDto.LicensePlate.Replace("-", "").ToUpper())
+					.FirstOrDefaultAsync(cancellation);
 
 				if (vehicle != null)
-					throw new InvalidOperationException($"{nameof(AddVehicleAsync)}: {nameof(vehicle)} with same license plate already exists.");
+					throw new InvalidOperationException($"{nameof(VehicleService)}: {nameof(AddVehicleAsync)}: {nameof(vehicle)} with same license plate already exists.");
 
 				await _context.Vehicles.AddAsync(VehicleMapper.MapVehiclePostDtoToModel(vehicleDto), cancellation);
 				await _context.SaveChangesAsync(cancellation);
@@ -111,7 +116,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				VehicleModel? vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(vehicleDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
+				VehicleModel? vehicle = await _context.Vehicles
+					.Where(v => v.LicensePlate == vehicleDto.LicensePlate.Replace("-", "").ToUpper())
+					.FirstOrDefaultAsync(cancellation);
 
 				if (vehicle == null)
 					return null;
@@ -131,7 +138,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 		{
 			try
 			{
-				VehicleModel? vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(licensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
+				VehicleModel? vehicle = await _context.Vehicles
+					.Where(v => v.LicensePlate == licensePlate.Replace("-", "").ToUpper())
+					.FirstOrDefaultAsync(cancellation);
 
 				if (vehicle == null)
 					return null;

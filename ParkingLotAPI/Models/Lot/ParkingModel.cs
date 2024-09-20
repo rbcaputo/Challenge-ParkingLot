@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ParkingLotAPI.Data;
-using ParkingLotAPI.Utils;
+﻿using ParkingLotAPI.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,50 +9,32 @@ namespace ParkingLotAPI.Models.Lot
 		private DateTime? _exitTime;
 
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; private set; }
 
 		public FareModel Fare { get; set; } = new();
 
 		[ForeignKey(nameof(Fare))]
 		public int FareId { get; set; }
 
-		public VehicleModel? Vehicle { get; set; } = new();
+		public VehicleModel Vehicle { get; set; } = new();
 
-		[ForeignKey(nameof(ParkingModel))]
+		[ForeignKey(nameof(Vehicle))]
 		public int VehicleId { get; set; }
 
-		public DateTime EntryTime { get; set; } = DateTime.UtcNow;
+		public DateTime EntryTime { get; set; } = DateTime.Now;
 
 		public DateTime? ExitTime
 		{
 			get => _exitTime;
 			set
 			{
-				ValidatorClass.ValidateExitTime(EntryTime, value);
 				_exitTime = value;
+				ValidatorClass.ValidateExitTime(this);
 			}
 		}
 
-		public TimeSpan Duration => (ExitTime ?? DateTime.UtcNow) - EntryTime;
+		public TimeSpan? Duration { get; set; }
 
-		public decimal TotalPrice => CalculatorClass.CalculateTotalPrice(this);
-
-		public async Task SetCurrentFareAsync(DataContext context, CancellationToken cancellation)
-		{
-			try
-			{
-				FareModel? fare = await context.Fares.FirstOrDefaultAsync(f => f.IsCurrent, cancellation);
-
-				if (fare == null)
-					throw new InvalidOperationException($"{nameof(SetCurrentFareAsync)}: {nameof(fare)} cannot be null.");
-
-				Fare = fare;
-				FareId = fare.Id;
-			}
-			catch
-			{
-				throw;
-			}
-		}
+		public decimal? TotalPrice { get; set; }
 	}
 }

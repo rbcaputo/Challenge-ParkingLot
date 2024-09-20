@@ -9,11 +9,11 @@
 			Large = 3
 		}
 
-		public static IReadOnlyDictionary<VehicleSize, double> VehicleSizeFareMods { get; } = new Dictionary<VehicleSize, double>()
+		public static IReadOnlyDictionary<VehicleSize, decimal> VehicleSizeFareMods { get; } = new Dictionary<VehicleSize, decimal>()
 		{
-			{ VehicleSize.Small, 1.00 },
-			{ VehicleSize.Medium, 1.50 },
-			{ VehicleSize.Large, 2.00 }
+			{ VehicleSize.Small, 1.00m },
+			{ VehicleSize.Medium, 1.50m },
+			{ VehicleSize.Large, 2.00m }
 		};
 	}
 }

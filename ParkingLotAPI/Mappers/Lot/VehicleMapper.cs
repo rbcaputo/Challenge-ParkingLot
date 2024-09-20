@@ -1,5 +1,6 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
 using ParkingLotAPI.Dtos.Lot.PostPut;
+using ParkingLotAPI.Dtos.Min;
 using ParkingLotAPI.Models.Lot;
 using ParkingLotAPI.Utils;
 
@@ -9,7 +10,7 @@ namespace ParkingLotAPI.Mappers.Lot
 	{
 		public static VehicleGetDto MapVehicleModelToGetDto(VehicleModel vehicle)
 		{
-			return new VehicleGetDto
+			return new()
 			{
 				LicensePlate = vehicle.LicensePlate,
 
@@ -22,40 +23,56 @@ namespace ParkingLotAPI.Mappers.Lot
 				Color = vehicle.Color,
 
 				Parkings = vehicle.Parkings
-					.Select(ParkingMapper.MapParkingModelToGetMinDto)
+					.Select(ParkingMapper.MapParkingModelToMinGetDto)
 					.ToList(),
 
 				IsParked = vehicle.IsParked
 			};
 		}
 
+		public static VehicleMinGetDto MapVehicleModelToMinGetDto(VehicleModel vehicle)
+		{
+			return new()
+			{
+				LicensePlate = vehicle.LicensePlate,
+
+				Size = vehicle.Size,
+
+				Brand = vehicle.Brand,
+
+				Model = vehicle.Model,
+
+				Color = vehicle.Color
+			};
+		}
+
 		public static VehicleModel MapVehiclePostDtoToModel(VehiclePostPutDto vehicleDto)
 		{
-			return new VehicleModel
+			return new()
 			{
-				LicensePlate = StringProcessorClass.ToTitleCase(vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant()),
+				LicensePlate = FormaterClass.ToUpperCase(vehicleDto.LicensePlate.Replace("-", "")),
 
 				Size = vehicleDto.Size,
 
-				Brand = StringProcessorClass.ToTitleCase(vehicleDto.Brand),
+				Brand = FormaterClass.ToTitleCase(vehicleDto.Brand),
 
-				Model = StringProcessorClass.ToTitleCase(vehicleDto.Model),
+				Model = FormaterClass.ToTitleCase(vehicleDto.Model),
 
-				Color = StringProcessorClass.ToTitleCase(vehicleDto.Color)
+				Color = FormaterClass.ToTitleCase(vehicleDto.Color)
 			};
 		}
 
 		public static void MapVehiclePutDtoToModel(VehiclePostPutDto vehicleDto, VehicleModel vehicle)
 		{
-			vehicle.LicensePlate = StringProcessorClass.ToTitleCase(vehicleDto.LicensePlate.Replace("-", "").ToUpperInvariant());
+			vehicle.LicensePlate = FormaterClass.ToUpperCase(vehicleDto.LicensePlate.Replace("-", ""));
 
 			vehicle.Size = vehicleDto.Size;
 
-			vehicle.Brand = StringProcessorClass.ToTitleCase(vehicleDto.Brand);
+			vehicle.Brand = FormaterClass.ToTitleCase(vehicleDto.Brand);
 
-			vehicle.Model = StringProcessorClass.ToTitleCase(vehicleDto.Model);
+			vehicle.Model = FormaterClass.ToTitleCase(vehicleDto.Model);
 
-			vehicle.Color = StringProcessorClass.ToTitleCase(vehicleDto.Color);
+			vehicle.Color = FormaterClass.ToTitleCase(vehicleDto.Color);
 		}
 	}
 }

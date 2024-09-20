@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
+using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
 using ParkingLotAPI.Dtos.Min;
 using ParkingLotAPI.Models.Lot;
+using ParkingLotAPI.Utils;
 
 namespace ParkingLotAPI.Mappers.Lot
 {
@@ -11,11 +12,11 @@ namespace ParkingLotAPI.Mappers.Lot
 	{
 		public static ParkingGetDto MapParkingModelToGetDto(ParkingModel parking)
 		{
-			return new ParkingGetDto
+			return new()
 			{
 				Fare = FareMapper.MapFareModelToGetDto(parking.Fare),
 
-				Vehicle = VehicleMapper.MapVehicleModelToGetDto(parking.Vehicle!),
+				Vehicle = VehicleMapper.MapVehicleModelToMinGetDto(parking.Vehicle),
 
 				EntryTime = parking.EntryTime,
 
@@ -27,12 +28,10 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static ParkingMinGetDto MapParkingModelToGetMinDto(ParkingModel parking)
+		public static ParkingMinGetDto MapParkingModelToMinGetDto(ParkingModel parking)
 		{
-			return new ParkingMinGetDto
+			return new()
 			{
-				Fare = FareMapper.MapFareModelToGetDto(parking.Fare),
-
 				EntryTime = parking.EntryTime,
 
 				ExitTime = parking.ExitTime,
@@ -43,22 +42,36 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static async Task<ParkingModel> MapParkingPostDtoToModel(ParkingPostPutDto parkingDto, DataContext context, CancellationToken cancellation)
+		public static async Task<ParkingModel> MapParkingPostDtoToModel(ParkingPostDto parkingDto, DataContext context, CancellationToken cancellation)
 		{
 			try
 			{
-				VehicleModel? vehicle = await context.Vehicles.FirstOrDefaultAsync(v => v.LicensePlate.Equals(parkingDto.LicensePlate.Replace("-", ""), StringComparison.InvariantCultureIgnoreCase), cancellation);
+				FareModel? fare = await context.Fares
+					.Where(f => f.IsCurrent)
+					.FirstOrDefaultAsync(cancellation);
+
+				if (fare == null)
+					throw new InvalidOperationException($"{nameof(ParkingMapper)}: {nameof(MapParkingPostDtoToModel)}: {nameof(fare)} cannot be null.");
+
+				VehicleModel? vehicle = await context.Vehicles
+					.Where(v => v.LicensePlate == parkingDto.LicensePlate.Replace("-", "").ToUpper())
+					.Include(v => v.Parkings)
+					.FirstOrDefaultAsync(cancellation);
 
 				if (vehicle == null)
-					throw new InvalidOperationException($"{nameof(MapParkingPostDtoToModel)}: {nameof(vehicle)} cannot be null.");
+					throw new InvalidOperationException($"{nameof(ParkingMapper)}: {nameof(MapParkingPostDtoToModel)}: {nameof(vehicle)} cannot be null.");
 
-				return new ParkingModel
+				return new()
 				{
+					Fare = fare,
+
+					FareId = fare.Id,
+
 					Vehicle = vehicle,
 
-					EntryTime = parkingDto.EntryTime,
+					VehicleId = vehicle.Id,
 
-					ExitTime = null
+					EntryTime = DateTime.Now
 				};
 			}
 			catch
@@ -67,9 +80,13 @@ namespace ParkingLotAPI.Mappers.Lot
 			}
 		}
 
-		public static void MapParkingPutDtoToModel(ParkingPostPutDto parkingDto, ParkingModel parking)
+		public static void MapParkingPutDtoToModel(ParkingPutDto parkingDto, ParkingModel parking)
 		{
 			parking.ExitTime = parkingDto.ExitTime;
+
+			parking.Duration = CalculatorClass.CalculateDuration(parking);
+			
+			parking.TotalPrice = CalculatorClass.CalculateTotalPrice(parking);
 		}
 	}
 }

@@ -1,6 +1,6 @@
-﻿namespace ParkingLotAPI.Dtos.Lot.PostPut
+﻿namespace ParkingLotAPI.Dtos.Lot.PostPut.Fare
 {
-	public class FarePostPutDto
+	public class FarePostDto
 	{
 		public DateTime StartDate { get; set; }
 

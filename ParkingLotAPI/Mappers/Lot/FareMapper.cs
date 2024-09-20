@@ -1,5 +1,5 @@
 ﻿using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
+using ParkingLotAPI.Dtos.Lot.PostPut.Fare;
 using ParkingLotAPI.Models.Lot;
 
 namespace ParkingLotAPI.Mappers.Lot
@@ -8,7 +8,7 @@ namespace ParkingLotAPI.Mappers.Lot
 	{
 		public static FareGetDto MapFareModelToGetDto(FareModel fare)
 		{
-			return new FareGetDto
+			return new()
 			{
 				StartDate = fare.StartDate.Date,
 
@@ -20,9 +20,9 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static FareModel MapFarePostDtoToModel(FarePostPutDto fareDto)
+		public static FareModel MapFarePostDtoToModel(FarePostDto fareDto)
 		{
-			return new FareModel
+			return new()
 			{
 				StartDate = fareDto.StartDate.Date,
 
@@ -32,13 +32,13 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static void MapFarePutDtoToModel(FarePostPutDto fareDto, FareModel fare)
+		public static void MapFarePutDtoToModel(FarePutDto fareDto, FareModel fare)
 		{
-			fare.StartDate = fareDto.StartDate.Date;
-
 			fare.EndDate = fareDto.EndDate;
 
 			fare.PricePerHour = fareDto.PricePerHour;
+
+			fare.SetIsCurrent();
 		}
 	}
 }

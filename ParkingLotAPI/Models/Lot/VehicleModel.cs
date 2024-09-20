@@ -9,15 +9,25 @@ namespace ParkingLotAPI.Models.Lot
 	[Index(nameof(LicensePlate), IsUnique = true)]
 	public class VehicleModel
 	{
-		[Key]
-		public int Id { get; set; }
+		private string _licensePlate = string.Empty;
 
-		public string LicensePlate { get; set; } = string.Empty;
+		[Key]
+		public int Id { get; private set; }
+
+		public string LicensePlate
+		{
+			get => _licensePlate;
+			set
+			{
+				_licensePlate = value;
+				ValidatorClass.ValidateLicensePlate(this);
+			}
+		}
 
 		public VehicleSize Size { get; set; }
 
 		[NotMapped]
-		public double SizeFareMod => VehicleSizeFareMods[Size];
+		public decimal SizeFareMod => VehicleSizeFareMods[Size];
 
 		public string Brand { get; set; } = string.Empty;
 
@@ -27,6 +37,11 @@ namespace ParkingLotAPI.Models.Lot
 
 		public ICollection<ParkingModel> Parkings { get; set; } = [];
 
-		public bool IsParked => ValidatorClass.CheckIfVechileIsParked(this);
+		public bool IsParked { get; set; }
+
+		public void SetIsParked()
+		{
+			IsParked = ValidatorClass.CheckIfVechileIsParked(this);
+		}
 	}
 }

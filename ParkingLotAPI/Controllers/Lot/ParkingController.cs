@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
+using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
 {
-	[Route("[controller]")]
+    [Route("[controller]")]
 	[ApiController]
 	public class ParkingController(IParkingService service) : ControllerBase
 	{
@@ -84,7 +84,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddParkingAsync(ParkingPostPutDto parkingDto)
+		public async Task<IActionResult> AddParkingAsync(ParkingPostDto parkingDto)
 		{
 			try
 			{
@@ -102,7 +102,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto)
+		public async Task<IActionResult> UpdateCurrentParkingByLicensePlateAsync(ParkingPutDto parkingDto)
 		{
 			try
 			{
