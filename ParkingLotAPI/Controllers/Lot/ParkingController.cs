@@ -5,7 +5,7 @@ using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
 {
-    [Route("[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class ParkingController(IParkingService service) : ControllerBase
 	{

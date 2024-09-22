@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut.Fare;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
@@ -102,7 +102,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool> AddFareAsync(FarePostDto fareDto, CancellationToken cancellation)
+		public async Task<bool> AddFareAsync(FarePostPutDto fareDto, CancellationToken cancellation)
 		{
 			try
 			{
@@ -120,7 +120,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> UpdateCurrentFareAsync(FarePutDto fareDto, CancellationToken cancellation)
+		public async Task<bool?> UpdateCurrentFareAsync(FarePostPutDto fareDto, CancellationToken cancellation)
 		{
 			try
 			{

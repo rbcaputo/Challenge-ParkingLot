@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut.Fare;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
@@ -102,7 +102,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddFareAsync(FarePostDto fareDto)
+		public async Task<IActionResult> AddFareAsync(FarePostPutDto fareDto)
 		{
 			try
 			{

@@ -3,7 +3,7 @@ using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
 
 namespace ParkingLotAPI.Interfaces.Lot.Requests
 {
-    public interface IParkingService
+	public interface IParkingService
 	{
 		public Task<ICollection<ParkingGetDto>> GetAllParkingsAsync(CancellationToken cancellation);
 		public Task<ICollection<ParkingGetDto>> GetAllParkingsByPricePerHourAsync(decimal pricePerHour, CancellationToken cancellation);
