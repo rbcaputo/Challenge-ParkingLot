@@ -120,7 +120,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateCurrentFareAsync(FarePutDto fareDto)
+		public async Task<IActionResult> UpdateCurrentFareAsync(FarePostPutDto fareDto)
 		{
 			try
 			{
