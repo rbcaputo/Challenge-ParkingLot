@@ -20,9 +20,9 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				ICollection<VehicleGetDto> vehicles = await _service.GetAllVehiclesAsync(cancellation);
 
-				return vehicles.Count == 0 ?
-					NotFound("No vehicles were found.") :
-					Ok(vehicles);
+				return vehicles.Count == 0
+					? NotFound("No vehicles were found.")
+					: Ok(vehicles);
 			}
 			catch (Exception e)
 			{
@@ -38,9 +38,9 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				ICollection<VehicleGetDto> vehicles = await _service.GetAllParkedVehiclesAsync(cancellation);
 
-				return vehicles.Count == 0 ?
-					NotFound("No parked vehicles were found.") :
-					Ok(vehicles);
+				return vehicles.Count == 0
+					? NotFound("No parked vehicles were found.")
+					: Ok(vehicles);
 			}
 			catch (Exception e)
 			{
@@ -48,7 +48,7 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		[HttpGet("size")]
+		[HttpGet("size/{size}")]
 		public async Task<ActionResult<ICollection<VehicleGetDto>>> GetAllVehiclesBySizeAsync(VehicleSize size)
 		{
 			try
@@ -56,9 +56,9 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				ICollection<VehicleGetDto> vehicles = await _service.GetAllVehiclesBySizeAsync(size, cancellation);
 
-				return vehicles.Count == 0 ?
-					NotFound("No vehicles were found with given size.") :
-					Ok(vehicles);
+				return vehicles.Count == 0
+					? NotFound("No vehicles were found with given size.")
+					: Ok(vehicles);
 			}
 			catch (Exception e)
 			{
@@ -67,7 +67,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 
-		[HttpGet("licensePlate")]
+		[HttpGet("licensePlate/{licensePlate}")]
 		public async Task<ActionResult<VehicleGetDto>> GetVehicleByLicensePlateAsync(string licensePlate)
 		{
 			try
@@ -75,9 +75,9 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				VehicleGetDto? vehicle = await _service.GetVehicleByLicensePlateAsync(licensePlate, cancellation);
 
-				return vehicle == null ?
-					NotFound("No vehicle was found with the given license plate.") :
-					Ok(vehicle);
+				return vehicle == null
+					? NotFound("No vehicle was found with the given license plate.")
+					: Ok(vehicle);
 			}
 			catch (Exception e)
 			{
@@ -93,9 +93,9 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				bool isAdded = await _service.AddVehicleAsync(vehicleDto, cancellation);
 
-				return !isAdded ?
-					StatusCode(500, "New vehicle could not be added.") :
-					Ok("New vehicle added successfully.");
+				return !isAdded
+					? StatusCode(500, "New vehicle could not be added.")
+					: Ok("New vehicle added successfully.");
 			}
 			catch (Exception e)
 			{
@@ -111,11 +111,11 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				bool? isUpdated = await _service.UpdateVehicleByLicensePlateAsync(vehicleDto, cancellation);
 
-				return isUpdated == null ?
-				 NotFound("No vehicle was found with the given license plate.") :
-				(bool)!isUpdated ?
-				 StatusCode(500, "Vehicle could not be updated.") :
-				 Ok("Vehicle updated successfully.");
+				return isUpdated == null
+					? NotFound("No vehicle was found with the given license plate.")
+				: (bool)!isUpdated
+					? StatusCode(500, "Vehicle could not be updated.")
+					: Ok("Vehicle updated successfully.");
 			}
 			catch (Exception e)
 			{
@@ -131,11 +131,11 @@ namespace ParkingLotAPI.Controllers.Lot
 				CancellationToken cancellation = HttpContext.RequestAborted;
 				bool? isRemoved = await _service.RemoveVehicleByLicensePlateAsync(licensePlate, cancellation);
 
-				return isRemoved == null ?
-					NotFound("No vehicle was found with the given license plate.") :
-				(bool)!isRemoved ?
-					StatusCode(500, "Vehicle could not be removed.") :
-					Ok("Vehicle removed successfully.");
+				return isRemoved == null
+					? NotFound("No vehicle was found with the given license plate.")
+				: (bool)!isRemoved
+					? StatusCode(500, "Vehicle could not be removed.")
+					: Ok("Vehicle removed successfully.");
 			}
 			catch (Exception e)
 			{

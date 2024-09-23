@@ -23,9 +23,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
-				return parkings.Count == 0 ?
-					[] :
-					parkings;
+				return parkings.Count == 0
+					? []
+					: parkings;
 			}
 			catch
 			{
@@ -44,9 +44,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
-				return parkings.Count == 0 ?
-					[] :
-					parkings;
+				return parkings.Count == 0
+					? []
+					: parkings;
 			}
 			catch
 			{
@@ -66,9 +66,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
-				return parkings.Count == 0 ?
-					[] :
-					parkings;
+				return parkings.Count == 0
+					? []
+					: parkings;
 			}
 			catch
 			{
@@ -87,9 +87,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
 					.ToListAsync(cancellation);
 
-				return parkings.Count == 0 ?
-					[] :
-					parkings;
+				return parkings.Count == 0
+					? []
+					: parkings;
 			}
 			catch
 			{

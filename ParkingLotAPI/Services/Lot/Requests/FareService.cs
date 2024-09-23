@@ -21,9 +21,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
 					.ToListAsync(cancellation);
 
-				return fares.Count == 0 ?
-					[] :
-					fares;
+				return fares.Count == 0
+					? []
+					: fares;
 			}
 			catch
 			{
@@ -40,9 +40,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(f => FareMapper.MapFareModelToGetDto(f))
 					.ToListAsync(cancellation);
 
-				return fares.Count == 0 ?
-					[] :
-					fares;
+				return fares.Count == 0
+					? []
+					: fares;
 			}
 			catch
 			{

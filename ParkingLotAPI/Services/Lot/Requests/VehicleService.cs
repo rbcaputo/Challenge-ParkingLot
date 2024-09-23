@@ -23,9 +23,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.ToListAsync(cancellation);
 
-				return vehicles.Count == 0 ?
-					[] :
-					vehicles;
+				return vehicles.Count == 0
+					? []
+					: vehicles;
 			}
 			catch
 			{
@@ -43,9 +43,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.ToListAsync(cancellation);
 
-				return vehicles.Count == 0 ?
-					[] :
-					vehicles;
+				return vehicles.Count == 0
+					? []
+					: vehicles;
 			}
 			catch
 			{
@@ -63,9 +63,9 @@ namespace ParkingLotAPI.Services.Lot.Requests
 					.Select(v => VehicleMapper.MapVehicleModelToGetDto(v))
 					.ToListAsync(cancellation);
 
-				return vehicles.Count == 0 ?
-					[] :
-					vehicles;
+				return vehicles.Count == 0
+					? []
+					: vehicles;
 			}
 			catch
 			{
