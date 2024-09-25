@@ -83,7 +83,7 @@ namespace ParkingLotAPI.Mappers.Lot
 
 		public static void MapParkingPutDtoToModel(ParkingPutDto parkingDto, ParkingModel parking)
 		{
-			parking.ExitTime = parkingDto.ExitTime;
+			parking.ExitTime = DateTime.Now;
 
 			parking.Duration = CalculatorClass.CalculateDuration(parking);
 
