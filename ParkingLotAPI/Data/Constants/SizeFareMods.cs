@@ -12,8 +12,8 @@
 		public static IReadOnlyDictionary<VehicleSize, decimal> VehicleSizeFareMods { get; } = new Dictionary<VehicleSize, decimal>()
 		{
 			{ VehicleSize.Small, 1.00m },
-			{ VehicleSize.Medium, 1.50m },
-			{ VehicleSize.Large, 2.00m }
+			{ VehicleSize.Medium, 1.25m },
+			{ VehicleSize.Large, 1.50m }
 		};
 	}
 }

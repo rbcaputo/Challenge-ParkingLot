@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingLotAPI.Data;
+using ParkingLotAPI.Dtos.Lot.Delete;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
@@ -97,7 +98,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool> AddParkingAsync(ParkingPostDto parkingDto, CancellationToken cancellation)
+		public async Task<bool> AddParkingAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation)
 		{
 			try
 			{
@@ -115,7 +116,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPutDto parkingDto, CancellationToken cancellation)
+		public async Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation)
 		{
 			try
 			{
@@ -140,13 +141,13 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> RemoveParkingByLicensePlateEntryTimeAsync(string licensePlate, DateTime entryTime, CancellationToken cancellation)
+		public async Task<bool?> RemoveParkingByLicensePlateEntryTimeAsync(ParkingDeleteDto parkingDto, CancellationToken cancellation)
 		{
 			try
 			{
 				ParkingModel? parking = await _context.Parkings
-					.Where(p => p.Vehicle.LicensePlate == licensePlate.Replace("-", "").ToUpper() &&
-											p.EntryTime == entryTime)
+					.Where(p => p.Vehicle.LicensePlate == parkingDto.LicensePlate.Replace("-", "").ToUpper() &&
+											p.EntryTime == parkingDto.EntryTime)
 					.Include(p => p.Fare)
 					.Include(p => p.Vehicle)
 					.FirstOrDefaultAsync(cancellation);

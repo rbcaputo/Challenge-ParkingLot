@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ParkingLotAPI.Dtos.Lot.Delete;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
@@ -84,7 +85,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddParkingAsync(ParkingPostDto parkingDto)
+		public async Task<IActionResult> AddParkingAsync(ParkingPostPutDto parkingDto)
 		{
 			try
 			{
@@ -102,7 +103,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateCurrentParkingByLicensePlateAsync(ParkingPutDto parkingDto)
+		public async Task<IActionResult> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto)
 		{
 			try
 			{
@@ -122,12 +123,12 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> RemoveParkingByLicensePlateEntryTimeAsync(string licensePlate, DateTime entryTime)
+		public async Task<IActionResult> RemoveParkingByLicensePlateEntryTimeAsync(ParkingDeleteDto parkingDto)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				bool? isRemoved = await _service.RemoveParkingByLicensePlateEntryTimeAsync(licensePlate, entryTime, cancellation);
+				bool? isRemoved = await _service.RemoveParkingByLicensePlateEntryTimeAsync(parkingDto, cancellation);
 
 				return isRemoved == null
 					? NotFound("No parking session was found with given license plate and entry time.")

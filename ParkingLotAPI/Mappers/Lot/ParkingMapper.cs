@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut.Parking;
+using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Dtos.Min;
 using ParkingLotAPI.Models.Lot;
 using ParkingLotAPI.Utils;
@@ -42,7 +42,7 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static async Task<ParkingModel> MapParkingPostDtoToModel(ParkingPostDto parkingDto, DataContext context, CancellationToken cancellation)
+		public static async Task<ParkingModel> MapParkingPostDtoToModel(ParkingPostPutDto parkingDto, DataContext context, CancellationToken cancellation)
 		{
 			try
 			{
@@ -59,21 +59,20 @@ namespace ParkingLotAPI.Mappers.Lot
 					.Include(v => v.Parkings)
 					.FirstOrDefaultAsync(cancellation);
 
-				if (vehicle == null)
-					throw new InvalidOperationException($"{nameof(ParkingMapper)}: {nameof(MapParkingPostDtoToModel)}: {nameof(vehicle)} cannot be null.");
+				return vehicle == null
+					? throw new InvalidOperationException($"No vehicle found with the given license plate.")
+					: new()
+					{
+						Fare = fare,
 
-				return new()
-				{
-					Fare = fare,
+						FareId = fare.Id,
 
-					FareId = fare.Id,
+						Vehicle = vehicle,
 
-					Vehicle = vehicle,
+						VehicleId = vehicle.Id,
 
-					VehicleId = vehicle.Id,
-
-					EntryTime = DateTime.Now
-				};
+						EntryTime = DateTime.Now
+					};
 			}
 			catch
 			{
@@ -81,7 +80,7 @@ namespace ParkingLotAPI.Mappers.Lot
 			}
 		}
 
-		public static void MapParkingPutDtoToModel(ParkingPutDto parkingDto, ParkingModel parking)
+		public static void MapParkingPutDtoToModel(ParkingPostPutDto parkingDto, ParkingModel parking)
 		{
 			parking.ExitTime = DateTime.Now;
 
