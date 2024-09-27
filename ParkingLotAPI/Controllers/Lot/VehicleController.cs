@@ -113,7 +113,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isUpdated == null
 					? NotFound("No vehicle was found with the given license plate.")
-				: (bool)!isUpdated
+					: (bool)!isUpdated
 					? StatusCode(500, "Vehicle could not be updated.")
 					: Ok("Vehicle updated successfully.");
 			}
@@ -133,7 +133,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isRemoved == null
 					? NotFound("No vehicle was found with the given license plate.")
-				: (bool)!isRemoved
+					: (bool)!isRemoved
 					? StatusCode(500, "Vehicle could not be removed.")
 					: Ok("Vehicle removed successfully.");
 			}

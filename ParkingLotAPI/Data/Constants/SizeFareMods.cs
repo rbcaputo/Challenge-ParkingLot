@@ -4,16 +4,16 @@
 	{
 		public enum VehicleSize
 		{
-			Small = 1,
-			Medium = 2,
-			Large = 3
+			small = 1,
+			medium = 2,
+			large = 3
 		}
 
 		public static IReadOnlyDictionary<VehicleSize, decimal> VehicleSizeFareMods { get; } = new Dictionary<VehicleSize, decimal>()
 		{
-			{ VehicleSize.Small, 1.00m },
-			{ VehicleSize.Medium, 1.25m },
-			{ VehicleSize.Large, 1.50m }
+			{ VehicleSize.small, 1.00m },
+			{ VehicleSize.medium, 1.25m },
+			{ VehicleSize.large, 1.50m }
 		};
 	}
 }

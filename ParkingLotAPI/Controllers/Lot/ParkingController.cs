@@ -112,7 +112,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isUpdated == null
 					? NotFound("No current parking session was found with given license plate.")
-				: (bool)!isUpdated
+					: (bool)!isUpdated
 					? StatusCode(500, "Current parking session could not be updated.")
 					: Ok("Current parking session updated successfully.");
 			}
@@ -132,7 +132,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isRemoved == null
 					? NotFound("No parking session was found with given license plate and entry time.")
-				: (bool)!isRemoved
+					: (bool)!isRemoved
 					? StatusCode(500, "Parking session could not be removed.")
 					: Ok("Parking session removed successfully.");
 			}

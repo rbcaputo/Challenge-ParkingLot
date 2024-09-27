@@ -129,7 +129,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isUpdated == null
 					? NotFound("No current fare was found.")
-				: (bool)!isUpdated
+					: (bool)!isUpdated
 					? StatusCode(500, "Current fare could not be updated.")
 					: Ok("Current fare updated successfully.");
 			}
@@ -149,7 +149,7 @@ namespace ParkingLotAPI.Controllers.Lot
 
 				return isRemoved == null
 					? NotFound("No fare was found with given start date.")
-				: (bool)!isRemoved
+					: (bool)!isRemoved
 					? StatusCode(500, "Fare could not be removed.")
 					: Ok("Fare removed successfully.");
 			}
