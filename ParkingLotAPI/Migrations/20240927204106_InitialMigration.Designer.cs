@@ -12,7 +12,7 @@ using ParkingLotAPI.Data;
 namespace ParkingLotAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240920211038_InitialMigration")]
+    [Migration("20240927204106_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />

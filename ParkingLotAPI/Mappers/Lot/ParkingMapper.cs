@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Dtos.Min;
 using ParkingLotAPI.Models.Lot;
 using ParkingLotAPI.Utils;
@@ -32,6 +31,8 @@ namespace ParkingLotAPI.Mappers.Lot
 		{
 			return new()
 			{
+				LicensePlate = parking.Vehicle.LicensePlate,
+
 				EntryTime = parking.EntryTime,
 
 				ExitTime = parking.ExitTime,
@@ -42,7 +43,7 @@ namespace ParkingLotAPI.Mappers.Lot
 			};
 		}
 
-		public static async Task<ParkingModel> MapParkingPostDtoToModel(ParkingPostPutDto parkingDto, DataContext context, CancellationToken cancellation)
+		public static async Task<ParkingModel> MapParkingPostToModel(string licensePlate, DataContext context, CancellationToken cancellation)
 		{
 			try
 			{
@@ -52,10 +53,10 @@ namespace ParkingLotAPI.Mappers.Lot
 					.FirstOrDefaultAsync(cancellation);
 
 				if (fare == null)
-					throw new InvalidOperationException($"{nameof(ParkingMapper)}: {nameof(MapParkingPostDtoToModel)}: {nameof(fare)} cannot be null.");
+					throw new InvalidOperationException($"{nameof(ParkingMapper)}: {nameof(MapParkingPostToModel)}: {nameof(fare)} cannot be null.");
 
 				VehicleModel? vehicle = await context.Vehicles
-					.Where(v => v.LicensePlate == parkingDto.LicensePlate.Replace("-", "").ToUpper())
+					.Where(v => v.LicensePlate == licensePlate.Replace("-", "").ToUpper())
 					.Include(v => v.Parkings)
 					.FirstOrDefaultAsync(cancellation);
 
@@ -80,7 +81,7 @@ namespace ParkingLotAPI.Mappers.Lot
 			}
 		}
 
-		public static void MapParkingPutDtoToModel(ParkingPostPutDto parkingDto, ParkingModel parking)
+		public static void MapParkingPutToModel(ParkingModel parking)
 		{
 			parking.ExitTime = DateTime.Now;
 
@@ -88,7 +89,7 @@ namespace ParkingLotAPI.Mappers.Lot
 
 			parking.TotalPrice = CalculatorClass.CalculateTotalPrice(parking);
 
-			parking.Vehicle.IsParked = ValidatorClass.CheckIfVechileIsParked(parking.Vehicle);
+			parking.Vehicle.IsParked = ValidatorClass.CheckIfVehicleIsParked(parking.Vehicle);
 		}
 	}
 }

@@ -124,7 +124,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> RemoveVehicleByLicensePlateAsync(string licensePlate)
+		public async Task<IActionResult> RemoveVehicleByLicensePlateAsync([FromBody] string licensePlate)
 		{
 			try
 			{

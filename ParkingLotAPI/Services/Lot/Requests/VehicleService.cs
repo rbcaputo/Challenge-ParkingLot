@@ -105,7 +105,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				VehicleModel newVehicle = VehicleMapper.MapVehiclePostDtoToModel(vehicleDto);
 
 				await _context.Vehicles.AddAsync(newVehicle, cancellation);
-				newVehicle.IsParked = ValidatorClass.CheckIfVechileIsParked(newVehicle);
+				newVehicle.IsParked = ValidatorClass.CheckIfVehicleIsParked(newVehicle);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;

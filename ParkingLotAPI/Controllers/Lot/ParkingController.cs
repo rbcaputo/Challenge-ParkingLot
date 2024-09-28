@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParkingLotAPI.Dtos.Lot.Delete;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 
 namespace ParkingLotAPI.Controllers.Lot
@@ -66,31 +65,13 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		[HttpGet("currentFare")]
-		public async Task<ActionResult<ICollection<ParkingGetDto>>> GetAllParkingsByCurrentFareAsync()
-		{
-			try
-			{
-				CancellationToken cancellation = HttpContext.RequestAborted;
-				ICollection<ParkingGetDto> parkings = await _service.GetAllParkingsByCurrentFareAsync(cancellation);
-
-				return parkings.Count == 0
-					? NotFound("No parking sessions were found with current fare.")
-					: Ok(parkings);
-			}
-			catch (Exception e)
-			{
-				return BadRequest(e.Message);
-			}
-		}
-
 		[HttpPost]
-		public async Task<IActionResult> AddParkingAsync(ParkingPostPutDto parkingDto)
+		public async Task<IActionResult> AddParkingAsync([FromBody] string licensePlate)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				bool isAdded = await _service.AddParkingAsync(parkingDto, cancellation);
+				bool isAdded = await _service.AddParkingAsync(licensePlate, cancellation);
 
 				return !isAdded
 					? StatusCode(500, "Parking session could not be added.")
@@ -103,12 +84,12 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto)
+		public async Task<IActionResult> UpdateCurrentParkingByLicensePlateAsync([FromBody] string licensePlate)
 		{
 			try
 			{
 				CancellationToken cancellation = HttpContext.RequestAborted;
-				bool? isUpdated = await _service.UpdateCurrentParkingByLicensePlateAsync(parkingDto, cancellation);
+				bool? isUpdated = await _service.UpdateCurrentParkingByLicensePlateAsync(licensePlate, cancellation);
 
 				return isUpdated == null
 					? NotFound("No current parking session was found with given license plate.")

@@ -42,7 +42,7 @@ namespace ParkingLotAPI.Utils
 						(fare.EndDate.HasValue && fare.EndDate.Value.Date > DateTime.Now.Date);
 		}
 
-		public static bool CheckIfVechileIsParked(VehicleModel vehicle)
+		public static bool CheckIfVehicleIsParked(VehicleModel vehicle)
 		{
 			return vehicle.Parkings.Count != 0 &&
 						 vehicle.Parkings.Any(p => p.ExitTime == null);

@@ -2,7 +2,6 @@
 using ParkingLotAPI.Data;
 using ParkingLotAPI.Dtos.Lot.Delete;
 using ParkingLotAPI.Dtos.Lot.Get;
-using ParkingLotAPI.Dtos.Lot.PostPut;
 using ParkingLotAPI.Interfaces.Lot.Requests;
 using ParkingLotAPI.Mappers.Lot;
 using ParkingLotAPI.Models.Lot;
@@ -77,35 +76,14 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<ICollection<ParkingGetDto>> GetAllParkingsByCurrentFareAsync(CancellationToken cancellation)
+		public async Task<bool> AddParkingAsync(string licensePlate, CancellationToken cancellation)
 		{
 			try
 			{
-				ICollection<ParkingGetDto> parkings = await _context.Parkings
-					.Where(p => p.Fare.IsCurrent)
-					.Include(p => p.Fare)
-					.Include(p => p.Vehicle)
-					.Select(p => ParkingMapper.MapParkingModelToGetDto(p))
-					.ToListAsync(cancellation);
-
-				return parkings.Count == 0
-					? []
-					: parkings;
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
-		public async Task<bool> AddParkingAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation)
-		{
-			try
-			{
-				ParkingModel parking = await ParkingMapper.MapParkingPostDtoToModel(parkingDto, _context, cancellation);
+				ParkingModel parking = await ParkingMapper.MapParkingPostToModel(licensePlate, _context, cancellation);
 
 				await _context.AddAsync(parking, cancellation);
-				parking.Vehicle.IsParked = ValidatorClass.CheckIfVechileIsParked(parking.Vehicle);
+				parking.Vehicle.IsParked = ValidatorClass.CheckIfVehicleIsParked(parking.Vehicle);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -116,12 +94,12 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<bool?> UpdateCurrentParkingByLicensePlateAsync(ParkingPostPutDto parkingDto, CancellationToken cancellation)
+		public async Task<bool?> UpdateCurrentParkingByLicensePlateAsync(string licensePlate, CancellationToken cancellation)
 		{
 			try
 			{
 				ParkingModel? parking = await _context.Parkings
-					.Where(p => p.Vehicle.LicensePlate == parkingDto.LicensePlate.Replace("-", "").ToUpper() &&
+					.Where(p => p.Vehicle.LicensePlate == licensePlate.Replace("-", "").ToUpper() &&
 											p.ExitTime == null)
 					.Include(p => p.Fare)
 					.Include(p => p.Vehicle)
@@ -130,7 +108,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				if (parking == null)
 					return null;
 
-				ParkingMapper.MapParkingPutDtoToModel(parkingDto, parking);
+				ParkingMapper.MapParkingPutToModel(parking);
 				await _context.SaveChangesAsync(cancellation);
 
 				return true;
@@ -161,7 +139,7 @@ namespace ParkingLotAPI.Services.Lot.Requests
 				_context.Parkings.Remove(parking);
 
 				if (vehicle.Parkings.Count != 0)
-					ValidatorClass.CheckIfVechileIsParked(vehicle);
+					ValidatorClass.CheckIfVehicleIsParked(vehicle);
 
 				await _context.SaveChangesAsync(cancellation);
 
