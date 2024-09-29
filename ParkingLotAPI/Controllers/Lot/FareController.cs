@@ -47,42 +47,6 @@ namespace ParkingLotAPI.Controllers.Lot
 			}
 		}
 
-		[HttpGet("startDate/{startDate}")]
-		public async Task<ActionResult<FareGetDto>> GetFareByStartDateAsync(DateTime startDate)
-		{
-			try
-			{
-				CancellationToken cancellation = HttpContext.RequestAborted;
-				FareGetDto? fare = await _service.GetFareByStartDateAsync(startDate, cancellation);
-
-				return fare == null
-					? NotFound("Fare not found with given start date.")
-					: Ok(fare);
-			}
-			catch (Exception e)
-			{
-				return BadRequest(e.Message);
-			}
-		}
-
-		[HttpGet("endDate/{endDate}")]
-		public async Task<ActionResult<FareGetDto>> GetFareByEndDateAsync(DateTime endDate)
-		{
-			try
-			{
-				CancellationToken cancellation = HttpContext.RequestAborted;
-				FareGetDto? fare = await _service.GetFareByEndDateAsync(endDate, cancellation);
-
-				return fare == null
-					? NotFound("Fare not found with given end date.")
-					: Ok(fare);
-			}
-			catch (Exception e)
-			{
-				return BadRequest(e.Message);
-			}
-		}
-
 		[HttpGet("current")]
 		public async Task<ActionResult<FareGetDto>> GetCurrentFareDtoAsync()
 		{
@@ -140,7 +104,7 @@ namespace ParkingLotAPI.Controllers.Lot
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> RemoveFareByStartDateAsync(DateTime startDate)
+		public async Task<IActionResult> RemoveFareByStartDateAsync([FromBody] DateTime startDate)
 		{
 			try
 			{

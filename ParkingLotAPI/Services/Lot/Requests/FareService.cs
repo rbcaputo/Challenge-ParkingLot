@@ -50,41 +50,6 @@ namespace ParkingLotAPI.Services.Lot.Requests
 			}
 		}
 
-		public async Task<FareGetDto?> GetFareByStartDateAsync(DateTime startDate, CancellationToken cancellation)
-		{
-			try
-			{
-				FareGetDto? fare = await _context.Fares
-					.Where(f => f.StartDate.Date == startDate.Date)
-					.Select(f => FareMapper.MapFareModelToGetDto(f))
-					.FirstOrDefaultAsync(cancellation);
-
-				return fare ?? null;
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
-		public async Task<FareGetDto?> GetFareByEndDateAsync(DateTime endDate, CancellationToken cancellation)
-		{
-			try
-			{
-				FareGetDto? fare = await _context.Fares
-					.Where(f => f.EndDate.HasValue &&
-											f.EndDate.Value.Date == endDate.Date)
-					.Select(f => FareMapper.MapFareModelToGetDto(f))
-					.FirstOrDefaultAsync(cancellation);
-
-				return fare ?? null;
-			}
-			catch
-			{
-				throw;
-			}
-		}
-
 		public async Task<FareGetDto?> GetCurrentFareAsync(CancellationToken cancellation)
 		{
 			try
