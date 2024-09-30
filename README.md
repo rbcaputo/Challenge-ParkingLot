@@ -19,7 +19,7 @@ The further development of this application can largely benefit from the introdu
 - LINQ
 
 ## Structure
-![ParkingLotAPI Structure](https://drive.google.com/file/d/1jB9zsqshMOArUjPUFZ6ncgwWREAGHK0B/view?usp=drive_link)
+![ParkingLotAPI Structure](https://drive.google.com/file/d/1jB9zsqshMOArUjPUFZ6ncgwWREAGHK0B/view?usp=sharing)
 
 ## Running the application
 1. Clone or download the code to your local machine.
