@@ -19,9 +19,10 @@ The further development of this application can largely benefit from the introdu
 - LINQ
 
 ## Structure
-![ParkingLotAPI Structure](https://drive.google.com/file/d/1jB9zsqshMOArUjPUFZ6ncgwWREAGHK0B/view)
+![ParkingLot UML Model](https://github.com/user-attachments/assets/95069c9b-c844-43f6-96e0-f501a2c24b95)
 
 ## Running the application
+n
 1. Clone or download the code to your local machine.
 2. Open Visual Studio 2022, make sure the latest IDE updates are installed and load the project 'sln' file.
 3. Go to Tools > NuGet Package Manager > Package Manager Console.
