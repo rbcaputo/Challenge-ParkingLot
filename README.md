@@ -8,7 +8,7 @@ ParkingLotAPI is a RESTful Web API which goal is to serve as the middleware betw
 The application is currently in MVP stage. There are improvements to be made and features to consider, depending on the complexity of the business rules. Some ideas for future expansion are already implemented in the code base, although they are not being used in this version.
 It was developed leveraging some of the latest features of .NET 8.0. Since it is in development stage, Swagger is active as means to test HTTP requests transactions.
 
-The further development of this application can largely benefit from the introduction of better validation and exception handling. The management of different user access levels can also be implemented through JWT and proper routing.
+Further development of this application can largely benefit from the introduction of better validation and exception handling. The management of different user access levels can also be implemented through JWT and proper routing.
 
 ## Technologies
 - SQL Server
